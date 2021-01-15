@@ -1,7 +1,7 @@
 # This YAML file defines the relationship and deployment ordering of your environments.
 
 # The name of the pipeline
-name: pipeline-webapp-nginxapp
+name: pipeline-webapp-efekarakus-copilot-pipeline-test
 
 # The version of the schema used in this template
 version: 1
@@ -9,13 +9,14 @@ version: 1
 # This section defines the source artifacts.
 source:
   # The name of the provider that is used to store the source artifacts.
-  provider: CodeCommit
+  provider: GitHub
   # Additional properties that further specifies the exact location
   # the artifacts should be sourced from. For example, the GitHub provider
   # has the following properties: repository, branch.
   properties:
+    access_token_secret: github-token-webapp-copilot-pipeline-test
     branch: master
-    repository: https://us-west-2.console.aws.amazon.com/codesuite/codecommit/repositories/nginxapp/browse
+    repository: https://github.com/efekarakus/copilot-pipeline-test
 
 # The deployment section defines the order the pipeline will deploy
 # to your environments.
