@@ -10,8 +10,8 @@ const HOST = '0.0.0.0';
 const app = express();
 app.get('/', (req, res) => {
   console.log("received request 3")
-  //res.send('Hello World');
-  res.status(400).send({error: 'boom'});
+  res.send('Hello World');
+  //res.status(400).send({error: 'boom'});
 });
 
 app.listen(PORT, HOST);
