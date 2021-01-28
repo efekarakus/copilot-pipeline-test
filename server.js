@@ -8,8 +8,8 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
-app.get('/', (req, res) => {
-  console.log("received request 5")
+app.get('/hello', (req, res) => {
+  console.log("received request 9")
   res.send('Hello World');
   //res.status(400).send({error: 'boom'});
 });

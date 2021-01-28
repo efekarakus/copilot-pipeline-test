@@ -17,10 +17,10 @@ image:
 http:
   # Requests to this path will be forwarded to your service. 
   # To match all requests you can use the "/" path. 
-  path: '/'
+  path: 'hello'
   # You can specify a custom health check path. The default is "/".
   # For additional configuration: https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#http-healthcheck
-  healthcheck: '/dummy'
+  healthcheck: '/hello'
   # You can enable sticky sessions.
   # stickiness: true
 
@@ -29,7 +29,7 @@ cpu: 256
 # Amount of memory in MiB used by the task.
 memory: 512
 # Number of tasks that should be running in your service.
-count: 10
+count: 1
 
 # Optional fields for more advanced use-cases.
 #
