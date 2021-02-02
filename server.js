@@ -9,9 +9,9 @@ const HOST = '0.0.0.0';
 // App
 const app = express();
 app.get('/hello', (req, res) => {
-  console.log("received request 9")
-  res.send('Hello World');
-  //res.status(400).send({error: 'boom'});
+  console.log("received request 10")
+  //res.send('Hello World');
+  res.status(400).send({error: 'boom'});
 });
 
 app.listen(PORT, HOST);
