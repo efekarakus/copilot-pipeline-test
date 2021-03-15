@@ -24,12 +24,10 @@ http:
   # You can enable sticky sessions.
   # stickiness: true
 
-# Number of CPU units for the task.
-cpu: 256
-# Amount of memory in MiB used by the task.
-memory: 512
-# Number of tasks that should be running in your service.
+cpu: 512
+memory: 1024
 count: 10
+exec: true
 
 # Optional fields for more advanced use-cases.
 #
