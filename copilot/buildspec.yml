@@ -1,9 +1,5 @@
 # Buildspec runs in the build stage of your pipeline.
 version: 0.2
-env:
-  parameter-store:
-    DOCKER_USERNAME: DOCKER_USERNAME
-    DOCKER_PASSWD: DOCKER_PASSWD
 phases:
   install:
     runtime-versions:
@@ -13,8 +9,8 @@ phases:
       - echo "cd into $CODEBUILD_SRC_DIR"
       - cd $CODEBUILD_SRC_DIR
       # Download the copilot linux binary.
-      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.4.0-58-g28039f98
-      - mv ./copilot-linux-v1.4.0-58-g28039f98 ./copilot-linux
+      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.7.1-31-g8a5124de
+      - mv ./copilot-linux-v1.7.1-31-g8a5124de ./copilot-linux
       - chmod +x ./copilot-linux
   build:
     commands:
@@ -24,7 +20,6 @@ phases:
     commands:
       - ls -l
       - export COLOR="false"
-      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWD
       # First, upgrade the cloudformation stack of every environment in the pipeline.
       - pipeline=$(cat $CODEBUILD_SRC_DIR/copilot/pipeline.yml | ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))')
       - pl_envs=$(echo $pipeline | jq '.stages[].name' | sed 's/"//g')
@@ -62,8 +57,8 @@ phases:
           if [ -f "$ADDONSFILE" ]; then
             tmp=$(mktemp)
             timestamp=$(date +%s)
-            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-rwj9h481nxo6/manual/$timestamp/$workload.addons.stack.yml";
-            jq --arg a "https://stackset-demo-infrastruc-pipelinebuiltartifactbuc-rwj9h481nxo6.s3.us-west-2.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
+            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-11n2csp6cw5pi/manual/$timestamp/$workload.addons.stack.yml";
+            jq --arg a "https://stackset-demo-infrastruc-pipelinebuiltartifactbuc-11n2csp6cw5pi.s3.us-west-2.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
           fi
         done;
       # Build images

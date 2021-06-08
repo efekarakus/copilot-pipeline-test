@@ -16,6 +16,8 @@ source:
   properties:
     branch: main
     repository: https://github.com/efekarakus/copilot-pipeline-test
+    # Optional: specify the name of an existing CodeStar Connections connection.
+    # connection_name: a-connection
 
 # The deployment section defines the order the pipeline will deploy
 # to your environments.
