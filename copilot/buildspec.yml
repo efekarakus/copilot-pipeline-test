@@ -9,8 +9,8 @@ phases:
       - echo "cd into $CODEBUILD_SRC_DIR"
       - cd $CODEBUILD_SRC_DIR
       # Download the copilot linux binary.
-      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.7.1-31-g8a5124de
-      - mv ./copilot-linux-v1.7.1-31-g8a5124de ./copilot-linux
+      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.7.1-30-g59f8c87b
+      - mv ./copilot-linux-v1.7.1-30-g59f8c87b ./copilot-linux
       - chmod +x ./copilot-linux
   build:
     commands:
