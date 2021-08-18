@@ -60,14 +60,9 @@ phases:
           if [ -f "$ADDONSFILE" ]; then
             tmp=$(mktemp)
             timestamp=$(date +%s)
-            for bucket in $(echo $COPILOT_PIPELINE_BUCKETS | jq -c .buckets[]); do
-              s3URL="s3://$(echo $bucket | jq -r .name)/";
-              aws s3 cp "$ADDONSFILE" "$s3URL/manual/$timestamp/$workload.addons.stack.yml";
-              httpsURL="https://$(echo $bucket | jq -r .name).s3.$(echo $bucket | jq -r .region).amazonaws.com/";
-              for env in $(echo $bucket | jq -r -c .environments[]); do
-                jq --arg a "$httpsURL/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-$env.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-$env.params.json
-              done;
-            done;
+            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-9dwam3uacziz/manual/$timestamp/$workload.addons.stack.yml";
+            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-z8hcchgg33wa/manual/$timestamp/$workload.addons.stack.yml";
+            jq --arg a "https://stackset-demo-infrastruc-pipelinebuiltartifactbuc-z8hcchgg33wa.s3.us-west-2.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
           fi
         done;
       # Build images
