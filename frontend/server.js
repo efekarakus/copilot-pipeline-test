@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/hello', (req, res) => {
-  console.log("received request 27");
+  console.log("received request 40");
   res.send('Hello World From Prod');
   //res.status(400).send({error: 'boom'});
 });

@@ -13,8 +13,8 @@ phases:
       - echo "cd into $CODEBUILD_SRC_DIR"
       - cd $CODEBUILD_SRC_DIR
       # Download the copilot linux binary.
-      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.7.1-30-g59f8c87b
-      - mv ./copilot-linux-v1.7.1-30-g59f8c87b ./copilot-linux
+      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.9.0-39-ge05830bd
+      - mv ./copilot-linux-v1.9.0-39-ge05830bd ./copilot-linux
       - chmod +x ./copilot-linux
   build:
     commands:
@@ -36,15 +36,13 @@ phases:
       - svcs=$(./copilot-linux svc ls --local --json | jq '.services[].name' | sed 's/"//g')
       # Find all the local jobs in the workspace.
       - jobs=$(./copilot-linux job ls --local --json | jq '.jobs[].name' | sed 's/"//g')
-      # Find all the environments
-      - envs=$(./copilot-linux env ls --json | jq '.environments[].name' | sed 's/"//g')
       # Generate the cloudformation templates.
       # The tag is the build ID but we replaced the colon ':' with a dash '-'.
       # We truncate the tag (from the front) to 128 characters, the limit for Docker tags
       # (https://docs.docker.com/engine/reference/commandline/tag/)
       - tag=$(sed 's/:/-/g' <<<"$CODEBUILD_BUILD_ID" | rev | cut -c 1-128 | rev)
       - >
-        for env in $envs; do
+        for env in $pl_envs; do
           for svc in $svcs; do
           ./copilot-linux svc package -n $svc -e $env --output-dir './infrastructure' --tag $tag;
           done;
@@ -62,8 +60,9 @@ phases:
           if [ -f "$ADDONSFILE" ]; then
             tmp=$(mktemp)
             timestamp=$(date +%s)
-            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-11n2csp6cw5pi/manual/$timestamp/$workload.addons.stack.yml";
-            jq --arg a "https://stackset-demo-infrastruc-pipelinebuiltartifactbuc-11n2csp6cw5pi.s3.us-west-2.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
+            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-9dwam3uacziz/manual/$timestamp/$workload.addons.stack.yml";
+            aws s3 cp "$ADDONSFILE" "s3://stackset-demo-infrastruc-pipelinebuiltartifactbuc-z8hcchgg33wa/manual/$timestamp/$workload.addons.stack.yml";
+            jq --arg a "https://stackset-demo-infrastruc-pipelinebuiltartifactbuc-z8hcchgg33wa.s3.us-west-2.amazonaws.com/manual/$timestamp/$workload.addons.stack.yml" '.Parameters.AddonsTemplateURL = $a' ./infrastructure/$workload-test.params.json > "$tmp" && mv "$tmp" ./infrastructure/$workload-test.params.json
           fi
         done;
       # Build images
@@ -117,7 +116,7 @@ phases:
           echo "Running command: docker build -t $workload:$tag $build_args-f $df_path $df_dir_path";
           docker build -t $workload:$tag $build_args-f $df_path $df_dir_path;
           image_id=$(docker images -q $workload:$tag);
-          for env in $envs; do
+          for env in $pl_envs; do
             repo=$(cat $CODEBUILD_SRC_DIR/infrastructure/$workload-$env.params.json | jq '.Parameters.ContainerImage' | sed 's/"//g');
             region=$(echo $repo | cut -d'.' -f4);
             $(aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$region.amazonaws.com);
