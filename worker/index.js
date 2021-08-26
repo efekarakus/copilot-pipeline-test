@@ -1,6 +1,7 @@
 const { SQSClient, ReceiveMessageCommand, DeleteMessageCommand } = require("@aws-sdk/client-sqs");
 const client = new SQSClient({ region: "us-west-2" });
 
+console.log(`env variable: ${process.env.COPILOT_QUEUE_URIS}`);
 const {eventsQueue} = JSON.parse(process.env.COPILOT_QUEUE_URIS);
 
 (async () => {
