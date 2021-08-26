@@ -15,7 +15,7 @@ const {eventsQueue} = JSON.parse(process.env.COPILOT_QUEUE_URIS);
     
             console.log(`results: ${JSON.stringify(out)}`);
     
-            if (out.Messages.length === 0) {
+            if (out.Messages === undefined || out.Messages.length === 0) {
                 continue;
             }
     
