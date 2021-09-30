@@ -1,1 +1,3 @@
 out.deploy
+node_modules
+worker/node_modules/

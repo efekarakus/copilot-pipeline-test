@@ -17,5 +17,4 @@ RUN apt-get install curl -y
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
 CMD [ "node", "server.js" ]

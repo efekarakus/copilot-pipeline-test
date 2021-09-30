@@ -8,30 +8,34 @@ type: Load Balanced Web Service
 
 # Distribute traffic to your service.
 http:
-  # Requests to this path will be forwarded to your service.
-  # To match all requests you can use the "/" path.
   path: '/'
-  # You can specify a custom health check path. The default is "/".
-  # healthcheck: '/'
-#network:
-#  vpc:
-#    placement: 'private'
-
-# Configuration for your containers and service.
 image:
   # Docker build arguments. For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#image-build
   build: frontend/Dockerfile
   port: 8080
 
-cpu: 4096      # Number of CPU units for the task.
-memory: 8192   # Amount of memory in MiB used by the task.
-count:
-  range: 2-10
-  cpu_percentage: 70
-  memory_percentage: 80
-  requests: 10000
-  response_time: 2s   # Number of tasks that should be running in your service.
+cpu: 256      # Number of CPU units for the task.
+memory: 512   # Amount of memory in MiB used by the task.
+count: 1
+# count:
+#   range: 2-10
+#   cpu_percentage: 70
+#   memory_percentage: 80
+#   requests: 10000
+#   response_time: 2s   # Number of tasks that should be running in your service.
 exec: true     # Enable running commands in your container.
+
+publish:
+  topics:
+  - name: customers
+    allowed_workers: [worker]
+
+storage:
+  volumes:
+    myManagedEFSVolume:
+      efs: true
+      path: /var/efs
+      read_only: false
 
 # Optional fields for more advanced use-cases.
 #
