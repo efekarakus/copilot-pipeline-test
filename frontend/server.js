@@ -1,37 +1,45 @@
 'use strict';
-
 const express = require('express');
-const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
+const AWS = require('aws-sdk');
+const { Client } = require('pg');
 
-console.log(`COPILOT_SNS_TOPIC_ARNS: ${process.env.COPILOT_SNS_TOPIC_ARNS}`);
-
+const client = new AWS.SecretsManager({
+    region: 'us-west-2',
+});
 
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
-const client = new SNSClient({ region: "us-west-2" });
-
 
 // App
 const app = express();
-app.get('/', (req, res) => {
-  console.log("received request at root 1");
-  res.send('Hello from root');
-  //res.status(400).send({error: 'boom'});
+app.get('/', async (req, res) => {
+  console.log("received request at root");
+  const dbSecret = await client.getSecretValue({SecretId: process.env.WWWCLUSTER_SECRET_ARN}).promise();
+  const {username, host, dbname, password, port} = JSON.parse(dbSecret.SecretString);
+
+  console.log(`region: ${process.env.AWS_DEFAULT_REGION}, secret arn: ${process.env.WWWCLUSTER_SECRET_ARN}`);
+  console.log(`secret: ${dbSecret.SecretString}`);
+  let response = null;
+  try {
+    const client = new Client({
+      user: username,
+      host: host,
+      database: dbname,
+      password: password,
+      port: port,
+    });
+    client.connect();
+    response = await client.query('SELECT NOW() as now');
+  } catch (err) {
+    res.send(`db error: ${JSON.stringify(err)}`);
+  };
+  res.send(`Hello results: ${JSON.stringify(response.rows[0])}`);
 });
 
 app.get('/hello', (req, res) => {
   console.log("received request 41");
   res.send('Hello World From Prod');
-});
-
-app.post('/send', async (req, res) => {
-  const {customers} = JSON.parse(process.env.COPILOT_SNS_TOPIC_ARNS);
-  const out = await client.send(new PublishCommand({
-    Message: "hello",
-    TopicArn: customers,
-  }));
-  res.send(out);
 });
 
 app.listen(PORT, HOST);
