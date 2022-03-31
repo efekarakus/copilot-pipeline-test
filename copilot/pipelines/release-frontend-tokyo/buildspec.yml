@@ -1,5 +1,9 @@
 # Buildspec runs in the build stage of your pipeline.
 version: 0.2
+env:
+  parameter-store:
+    DOCKER_USERNAME: DOCKER_USERNAME
+    DOCKER_PASSWD: DOCKER_PASSWD
 phases:
   install:
     runtime-versions:
@@ -9,8 +13,7 @@ phases:
       - echo "cd into $CODEBUILD_SRC_DIR"
       - cd $CODEBUILD_SRC_DIR
       # Download the copilot linux binary.
-      - wget https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.15.0-93-g8e5a9b7e
-      - mv ./copilot-linux-v1.15.0-93-g8e5a9b7e ./copilot-linux
+      - wget https://github.com/huanjani/aws-copilot-sample-service/releases/download/v0.1.0/copilot-linux
       - chmod +x ./copilot-linux
   build:
     commands:
@@ -20,6 +23,7 @@ phases:
     commands:
       - ls -l
       - export COLOR="false"
+      - docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWD
       # First, upgrade the cloudformation stack of every environment in the pipeline.
       - pipeline=$(cat $CODEBUILD_SRC_DIR/copilot/pipelines/release-frontend-tokyo/manifest.yml | ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))')
       - pl_envs=$(echo $pipeline | jq -r '.stages[].name')
