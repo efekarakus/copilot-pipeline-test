@@ -17,7 +17,7 @@ source:
 stages:
     - name: test
       deployments: # orders -> frontend
-        orders:
-          depends_on: [frontend]
         frontend:
+          depends_on: [orders]
+        orders:
 
