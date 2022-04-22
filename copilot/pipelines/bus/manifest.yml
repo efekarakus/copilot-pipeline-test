@@ -13,8 +13,7 @@ source:
   properties:
     branch: main
     repository: https://github.com/efekarakus/copilot-pipeline-test
-    # Optional: specify the name of an existing CodeStar Connections connection.
-    # connection_name: a-connection
+    connection_name: copilot-efeka-copilot-pipeline-t
 stages:
     - name: test
       deployments: # orders -> frontend

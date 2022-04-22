@@ -13,7 +13,7 @@ source:
   properties:
     branch: main
     repository: https://github.com/efekarakus/copilot-pipeline-test
-    # connection_name: a-connection
+    connection_name: copilot-efeka-copilot-pipeline-t
 
 stages:
     -
