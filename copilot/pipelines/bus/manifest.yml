@@ -16,7 +16,7 @@ source:
     # Optional: specify the name of an existing CodeStar Connections connection.
     # connection_name: a-connection
 stages:
-      name: test
+    - name: test
       deployments: # orders -> frontend
         orders:
           depends_on: [frontend]
