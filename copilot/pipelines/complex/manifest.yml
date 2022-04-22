@@ -1,0 +1,27 @@
+# The manifest for the "complex" pipeline.
+# This YAML file defines your pipeline: the source repository it tracks and the order of the environments to deploy to.
+# For more info: https://aws.github.io/copilot-cli/docs/manifest/pipeline/
+
+# The name of the pipeline.
+name: complex
+
+version: 1
+
+source:
+  provider: GitHub
+  properties:
+    branch: main
+    repository: https://github.com/efekarakus/copilot-pipeline-test
+    # connection_name: a-connection
+
+stages:
+    - 
+      name: test
+      deployments:
+        warehouse:
+        payments:
+        orders:
+          depends_on: [warehouse]
+        frontend:
+          depends_on: [orders, payments]
+

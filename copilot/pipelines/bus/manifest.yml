@@ -1,0 +1,24 @@
+# The manifest for the "bus" pipeline.
+# This YAML file defines your pipeline: the source repository it tracks and the order of the environments to deploy to.
+# For more info: https://aws.github.io/copilot-cli/docs/manifest/pipeline/
+
+# The name of the pipeline.
+name: bus
+
+# The version of the schema used in this template.
+version: 1
+
+source:
+  provider: GitHub
+  properties:
+    branch: main
+    repository: https://github.com/efekarakus/copilot-pipeline-test
+    # Optional: specify the name of an existing CodeStar Connections connection.
+    # connection_name: a-connection
+stages:
+      name: test
+      deployments: # orders -> frontend
+        orders:
+          depends_on: [frontend]
+        frontend:
+
