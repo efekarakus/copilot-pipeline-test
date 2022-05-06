@@ -6,7 +6,7 @@ on:
       - synchronize
 
 jobs:
-  'Semantic Pull Request':
+  semantic-pull-request:
     runs-on: ubuntu-latest
     steps:
     - name: 'validate'
