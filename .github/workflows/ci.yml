@@ -1,0 +1,16 @@
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  'Semantic Pull Request':
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'validate'
+      uses: actions/github-script@v3.1.0
+      with:
+        script: |
+          console.log(JSON.stringify(${{github.event}}))

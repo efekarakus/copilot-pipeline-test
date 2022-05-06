@@ -14,12 +14,15 @@ source:
     repository: https://github.com/efekarakus/copilot-pipeline-test
     connection_name: copilot-efeka-copilot-pipeline-t
 
+# warehouse -> orders   -> frontend
+#              payments ->
 stages:
     - 
       name: test
       deployments:
         warehouse:
         payments:
+          depends_on: [frontend]
         orders:
           depends_on: [warehouse]
         frontend:
