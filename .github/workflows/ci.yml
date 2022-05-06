@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 'validate'
-      uses: actions/github-script@v3.1.0
+      uses: actions/github-script@v6
       with:
         script: |
-          console.log(JSON.stringify(${{github.event}}))
+          const pr = context.payload.pull_request;
+          console.log(JSON.stringify(pr))
