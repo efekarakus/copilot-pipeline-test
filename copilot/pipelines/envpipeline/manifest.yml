@@ -1,9 +1,9 @@
-# The manifest for the "basic" pipeline.
+# The manifest for the "envpipeline" pipeline.
 # This YAML file defines your pipeline: the source repository it tracks and the order of the environments to deploy to.
 # For more info: https://aws.github.io/copilot-cli/docs/manifest/pipeline/
 
 # The name of the pipeline.
-name: basic
+name: envpipeline
 
 # The version of the schema used in this template.
 version: 1
@@ -23,7 +23,11 @@ source:
 # This section defines the order of the environments your pipeline will deploy to.
 stages:
     - # The name of the environment.
-      name: test
+      name: default
+      deployments:
+        deploy-env:
+          template_path: infrastructure/default.env.yml
+          template_config: infrastructure/default.env.params.json
       # Optional: flag for manual approval action before deployment.
       # requires_approval: true
       # Optional: use test commands to validate this stage of your build.

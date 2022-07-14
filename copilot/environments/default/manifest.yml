@@ -1,0 +1,8 @@
+name: default
+type: Environment
+http:
+  public:
+    certificates:
+      - arn:aws:acm:us-west-2:615288112214:certificate/67040d62-c49d-415b-be0e-1530de8052c9
+observability:
+  container_insights: true
