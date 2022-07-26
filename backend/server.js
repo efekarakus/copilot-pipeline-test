@@ -1,29 +1,16 @@
 'use strict';
 
-console.log(`region is: ${process.env.AWS_DEFAULT_REGION}`);
+const express = require('express');
 
-const aws = require('aws-sdk');
-aws.config.update({region: process.env.AWS_DEFAULT_REGION});
-const sns = new aws.SNS();
+// Constants
+const PORT = 8080;
+const HOST = '0.0.0.0';
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+const app = express();
+app.get('/', (req, res) => {
+  console.log("received request 41");
+  res.send('Hello from backend');
+});
 
-
-(async () => {
-  const {loadtest} = JSON.parse(process.env.COPILOT_SNS_TOPIC_ARNS);
-  while(true) {
-      try {
-          const out = await sns.publish({
-            Message: 'test',
-            TopicArn: loadtest,
-          }).promise();
-  
-          console.log(`results: ${JSON.stringify(out)}`);
-      } catch (err) {
-          console.error(err);
-      }
-      await sleep(50);
-  }
-})();
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);

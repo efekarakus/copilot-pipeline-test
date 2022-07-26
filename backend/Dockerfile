@@ -18,3 +18,4 @@ RUN apt-get install curl -y
 COPY . .
 
 CMD [ "node", "server.js" ]
+EXPOSE 8080
