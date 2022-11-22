@@ -1,0 +1,12 @@
+FROM envoyproxy/envoy-dev:0422f644228968a2af2383fd0b917b146976759c
+
+RUN mkdir -p /etc/ssl
+ADD start_envoy.sh /start_envoy.sh
+ADD envoy.yaml /etc/envoy.yaml
+ADD certs /etc/ssl/
+
+RUN chmod +x /start_envoy.sh
+
+ENTRYPOINT ["/bin/sh"]
+EXPOSE 443
+CMD ["start_envoy.sh"]

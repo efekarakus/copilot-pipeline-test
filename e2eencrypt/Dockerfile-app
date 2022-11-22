@@ -1,0 +1,13 @@
+FROM envoyproxy/envoy-alpine-dev:latest
+
+RUN apk update && apk add python3 bash curl;
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
+RUN pip install -U Flask
+RUN mkdir /code
+
+ADD ./service.py /code
+
+EXPOSE 8080
+
+CMD ["python3", "/code/service.py"]
