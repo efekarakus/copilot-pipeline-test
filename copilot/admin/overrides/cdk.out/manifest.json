@@ -1,0 +1,430 @@
+{
+  "version": "22.0.0",
+  "artifacts": {
+    "Stack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Stack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Stack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Stack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2b7717af06174b6f51ab8d63910565194e268969978bc2d0bc20644080afdc2f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Stack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "Stack.assets"
+      ],
+      "metadata": {
+        "/Stack/Template": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Template"
+          }
+        ],
+        "/Stack/Template/AppName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppName"
+          }
+        ],
+        "/Stack/Template/EnvName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnvName"
+          }
+        ],
+        "/Stack/Template/WorkloadName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WorkloadName"
+          }
+        ],
+        "/Stack/Template/ContainerImage": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ContainerImage"
+          }
+        ],
+        "/Stack/Template/ContainerPort": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ContainerPort"
+          }
+        ],
+        "/Stack/Template/TaskCPU": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskCPU"
+          }
+        ],
+        "/Stack/Template/TaskMemory": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskMemory"
+          }
+        ],
+        "/Stack/Template/TaskCount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskCount"
+          }
+        ],
+        "/Stack/Template/DNSDelegated": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DNSDelegated"
+          }
+        ],
+        "/Stack/Template/LogRetention": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetention"
+          }
+        ],
+        "/Stack/Template/AddonsTemplateURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AddonsTemplateURL"
+          }
+        ],
+        "/Stack/Template/EnvFileARN": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnvFileARN"
+          }
+        ],
+        "/Stack/Template/frontendEnvFileARN": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "frontendEnvFileARN"
+          }
+        ],
+        "/Stack/Template/TargetContainer": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TargetContainer"
+          }
+        ],
+        "/Stack/Template/TargetPort": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TargetPort"
+          }
+        ],
+        "/Stack/Template/NLBAliases": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBAliases"
+          }
+        ],
+        "/Stack/Template/NLBPort": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBPort"
+          }
+        ],
+        "/Stack/Template/HTTPSEnabled": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPSEnabled"
+          }
+        ],
+        "/Stack/Template/RulePath": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RulePath"
+          }
+        ],
+        "/Stack/Template/$Conditions/IsGovCloud": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "IsGovCloud"
+          }
+        ],
+        "/Stack/Template/$Conditions/HasAssociatedDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasAssociatedDomain"
+          }
+        ],
+        "/Stack/Template/$Conditions/HasAddons": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasAddons"
+          }
+        ],
+        "/Stack/Template/$Conditions/HasEnvFile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasEnvFile"
+          }
+        ],
+        "/Stack/Template/$Conditions/HasfrontendEnvFile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasfrontendEnvFile"
+          }
+        ],
+        "/Stack/Template/LogGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogGroup"
+          }
+        ],
+        "/Stack/Template/ExecutionRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExecutionRole"
+          }
+        ],
+        "/Stack/Template/TaskRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskRole"
+          }
+        ],
+        "/Stack/Template/EnvControllerRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnvControllerRole"
+          }
+        ],
+        "/Stack/Template/EnvControllerFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnvControllerFunction"
+          }
+        ],
+        "/Stack/Template/EnvControllerAction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnvControllerAction"
+          }
+        ],
+        "/Stack/Template/TaskDefinition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskDefinition"
+          }
+        ],
+        "/Stack/Template/DiscoveryService": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DiscoveryService"
+          }
+        ],
+        "/Stack/Template/NLBSecurityGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBSecurityGroup"
+          }
+        ],
+        "/Stack/Template/TargetGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TargetGroup"
+          }
+        ],
+        "/Stack/Template/TargetGroup1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TargetGroup1"
+          }
+        ],
+        "/Stack/Template/TargetGroup2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TargetGroup2"
+          }
+        ],
+        "/Stack/Template/NLBTargetGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBTargetGroup"
+          }
+        ],
+        "/Stack/Template/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Service"
+          }
+        ],
+        "/Stack/Template/RulePriorityFunctionRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RulePriorityFunctionRole"
+          }
+        ],
+        "/Stack/Template/RulePriorityFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RulePriorityFunction"
+          }
+        ],
+        "/Stack/Template/HTTPRuleWithDomainPriorityAction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPRuleWithDomainPriorityAction"
+          }
+        ],
+        "/Stack/Template/HTTPListenerRuleWithDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPListenerRuleWithDomain"
+          }
+        ],
+        "/Stack/Template/HTTPSRulePriorityAction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPSRulePriorityAction"
+          }
+        ],
+        "/Stack/Template/HTTPSListenerRule": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPSListenerRule"
+          }
+        ],
+        "/Stack/Template/HTTPListenerRuleWithDomain1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPListenerRuleWithDomain1"
+          }
+        ],
+        "/Stack/Template/HTTPSListenerRule1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPSListenerRule1"
+          }
+        ],
+        "/Stack/Template/HTTPListenerRuleWithDomain2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPListenerRuleWithDomain2"
+          }
+        ],
+        "/Stack/Template/HTTPSListenerRule2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HTTPSListenerRule2"
+          }
+        ],
+        "/Stack/Template/PublicNetworkLoadBalancer": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PublicNetworkLoadBalancer"
+          }
+        ],
+        "/Stack/Template/NLBCertValidatorRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBCertValidatorRole"
+          }
+        ],
+        "/Stack/Template/NLBCertValidatorFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBCertValidatorFunction"
+          }
+        ],
+        "/Stack/Template/NLBCertValidatorAction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBCertValidatorAction"
+          }
+        ],
+        "/Stack/Template/NLBListener": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBListener"
+          }
+        ],
+        "/Stack/Template/NLBCustomDomainRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBCustomDomainRole"
+          }
+        ],
+        "/Stack/Template/NLBCustomDomainFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBCustomDomainFunction"
+          }
+        ],
+        "/Stack/Template/NLBCustomDomainAction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NLBCustomDomainAction"
+          }
+        ],
+        "/Stack/Template/AddonsStack": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AddonsStack"
+          }
+        ],
+        "/Stack/Template/$Ouputs/DiscoveryServiceARN": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DiscoveryServiceARN"
+          }
+        ],
+        "/Stack/Template/$Ouputs/PublicNetworkLoadBalancerDNSName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "PublicNetworkLoadBalancerDNSName"
+          }
+        ],
+        "/Stack/ElasticIP1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ElasticIP1"
+          }
+        ],
+        "/Stack/ElasticIP2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ElasticIP2"
+          }
+        ],
+        "/Stack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Stack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Stack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

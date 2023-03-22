@@ -1,0 +1,2189 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Stack": {
+        "id": "Stack",
+        "path": "Stack",
+        "children": {
+          "Template": {
+            "id": "Template",
+            "path": "Stack/Template",
+            "children": {
+              "$Mappings": {
+                "id": "$Mappings",
+                "path": "Stack/Template/$Mappings",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.1.287"
+                }
+              },
+              "AppName": {
+                "id": "AppName",
+                "path": "Stack/Template/AppName",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "EnvName": {
+                "id": "EnvName",
+                "path": "Stack/Template/EnvName",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "WorkloadName": {
+                "id": "WorkloadName",
+                "path": "Stack/Template/WorkloadName",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "ContainerImage": {
+                "id": "ContainerImage",
+                "path": "Stack/Template/ContainerImage",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "ContainerPort": {
+                "id": "ContainerPort",
+                "path": "Stack/Template/ContainerPort",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "TaskCPU": {
+                "id": "TaskCPU",
+                "path": "Stack/Template/TaskCPU",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "TaskMemory": {
+                "id": "TaskMemory",
+                "path": "Stack/Template/TaskMemory",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "TaskCount": {
+                "id": "TaskCount",
+                "path": "Stack/Template/TaskCount",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "DNSDelegated": {
+                "id": "DNSDelegated",
+                "path": "Stack/Template/DNSDelegated",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "LogRetention": {
+                "id": "LogRetention",
+                "path": "Stack/Template/LogRetention",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "AddonsTemplateURL": {
+                "id": "AddonsTemplateURL",
+                "path": "Stack/Template/AddonsTemplateURL",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "EnvFileARN": {
+                "id": "EnvFileARN",
+                "path": "Stack/Template/EnvFileARN",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "frontendEnvFileARN": {
+                "id": "frontendEnvFileARN",
+                "path": "Stack/Template/frontendEnvFileARN",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "TargetContainer": {
+                "id": "TargetContainer",
+                "path": "Stack/Template/TargetContainer",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "TargetPort": {
+                "id": "TargetPort",
+                "path": "Stack/Template/TargetPort",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBAliases": {
+                "id": "NLBAliases",
+                "path": "Stack/Template/NLBAliases",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBPort": {
+                "id": "NLBPort",
+                "path": "Stack/Template/NLBPort",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPSEnabled": {
+                "id": "HTTPSEnabled",
+                "path": "Stack/Template/HTTPSEnabled",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "RulePath": {
+                "id": "RulePath",
+                "path": "Stack/Template/RulePath",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnParameter",
+                  "version": "2.56.0"
+                }
+              },
+              "$Conditions": {
+                "id": "$Conditions",
+                "path": "Stack/Template/$Conditions",
+                "children": {
+                  "IsGovCloud": {
+                    "id": "IsGovCloud",
+                    "path": "Stack/Template/$Conditions/IsGovCloud",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.56.0"
+                    }
+                  },
+                  "HasAssociatedDomain": {
+                    "id": "HasAssociatedDomain",
+                    "path": "Stack/Template/$Conditions/HasAssociatedDomain",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.56.0"
+                    }
+                  },
+                  "HasAddons": {
+                    "id": "HasAddons",
+                    "path": "Stack/Template/$Conditions/HasAddons",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.56.0"
+                    }
+                  },
+                  "HasEnvFile": {
+                    "id": "HasEnvFile",
+                    "path": "Stack/Template/$Conditions/HasEnvFile",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.56.0"
+                    }
+                  },
+                  "HasfrontendEnvFile": {
+                    "id": "HasfrontendEnvFile",
+                    "path": "Stack/Template/$Conditions/HasfrontendEnvFile",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnCondition",
+                      "version": "2.56.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.1.287"
+                }
+              },
+              "$Rules": {
+                "id": "$Rules",
+                "path": "Stack/Template/$Rules",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.1.287"
+                }
+              },
+              "LogGroup": {
+                "id": "LogGroup",
+                "path": "Stack/Template/LogGroup",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "logGroupName": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "/copilot/",
+                          {
+                            "Ref": "AppName"
+                          },
+                          "-",
+                          {
+                            "Ref": "EnvName"
+                          },
+                          "-",
+                          {
+                            "Ref": "WorkloadName"
+                          }
+                        ]
+                      ]
+                    },
+                    "retentionInDays": {
+                      "Ref": "LogRetention"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                  "version": "2.56.0"
+                }
+              },
+              "ExecutionRole": {
+                "id": "ExecutionRole",
+                "path": "Stack/Template/ExecutionRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ecs-tasks.amazonaws.com"
+                          },
+                          "Action": "sts:AssumeRole"
+                        }
+                      ]
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+                      }
+                    ],
+                    "policies": [
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "ssm:GetParameters"
+                              ],
+                              "Resource": [
+                                {
+                                  "Fn::Sub": "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*"
+                                }
+                              ],
+                              "Condition": {
+                                "StringEquals": {
+                                  "ssm:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "ssm:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "secretsmanager:GetSecretValue"
+                              ],
+                              "Resource": [
+                                {
+                                  "Fn::Sub": "arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
+                                }
+                              ],
+                              "Condition": {
+                                "StringEquals": {
+                                  "secretsmanager:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "secretsmanager:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "kms:Decrypt"
+                              ],
+                              "Resource": [
+                                {
+                                  "Fn::Sub": "arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "policyName": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              {
+                                "Ref": "AppName"
+                              },
+                              "-",
+                              {
+                                "Ref": "EnvName"
+                              },
+                              "-",
+                              {
+                                "Ref": "WorkloadName"
+                              },
+                              "SecretsPolicy"
+                            ]
+                          ]
+                        }
+                      },
+                      {
+                        "Fn::If": [
+                          "HasEnvFile",
+                          {
+                            "PolicyName": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  {
+                                    "Ref": "AppName"
+                                  },
+                                  "-",
+                                  {
+                                    "Ref": "EnvName"
+                                  },
+                                  "-",
+                                  {
+                                    "Ref": "WorkloadName"
+                                  },
+                                  "GetEnvFilePolicy"
+                                ]
+                              ]
+                            },
+                            "PolicyDocument": {
+                              "Version": "2012-10-17",
+                              "Statement": [
+                                {
+                                  "Effect": "Allow",
+                                  "Action": [
+                                    "s3:GetObject"
+                                  ],
+                                  "Resource": [
+                                    {
+                                      "Ref": "EnvFileARN"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Effect": "Allow",
+                                  "Action": [
+                                    "s3:GetBucketLocation"
+                                  ],
+                                  "Resource": [
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":s3:::",
+                                          {
+                                            "Fn::Select": [
+                                              0,
+                                              {
+                                                "Fn::Split": [
+                                                  "/",
+                                                  {
+                                                    "Fn::Select": [
+                                                      5,
+                                                      {
+                                                        "Fn::Split": [
+                                                          ":",
+                                                          {
+                                                            "Ref": "EnvFileARN"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "Ref": "AWS::NoValue"
+                          }
+                        ]
+                      },
+                      {
+                        "Fn::If": [
+                          "HasfrontendEnvFile",
+                          {
+                            "PolicyName": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  {
+                                    "Ref": "AppName"
+                                  },
+                                  "-",
+                                  {
+                                    "Ref": "EnvName"
+                                  },
+                                  "-",
+                                  {
+                                    "Ref": "WorkloadName"
+                                  },
+                                  "GetfrontendEnvFilePolicy"
+                                ]
+                              ]
+                            },
+                            "PolicyDocument": {
+                              "Version": "2012-10-17",
+                              "Statement": [
+                                {
+                                  "Effect": "Allow",
+                                  "Action": [
+                                    "s3:GetObject"
+                                  ],
+                                  "Resource": [
+                                    {
+                                      "Ref": "frontendEnvFileARN"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Effect": "Allow",
+                                  "Action": [
+                                    "s3:GetBucketLocation"
+                                  ],
+                                  "Resource": [
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":s3:::",
+                                          {
+                                            "Fn::Select": [
+                                              0,
+                                              {
+                                                "Fn::Split": [
+                                                  "/",
+                                                  {
+                                                    "Fn::Select": [
+                                                      5,
+                                                      {
+                                                        "Fn::Split": [
+                                                          ":",
+                                                          {
+                                                            "Ref": "frontendEnvFileARN"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "Ref": "AWS::NoValue"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.56.0"
+                }
+              },
+              "TaskRole": {
+                "id": "TaskRole",
+                "path": "Stack/Template/TaskRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ecs-tasks.amazonaws.com"
+                          },
+                          "Action": "sts:AssumeRole"
+                        }
+                      ]
+                    },
+                    "policies": [
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Effect": "Deny",
+                              "Action": "iam:*",
+                              "Resource": "*"
+                            },
+                            {
+                              "Effect": "Allow",
+                              "Action": "sts:AssumeRole",
+                              "Resource": [
+                                {
+                                  "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/*"
+                                }
+                              ],
+                              "Condition": {
+                                "StringEquals": {
+                                  "iam:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "iam:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "policyName": "DenyIAMExceptTaggedRoles"
+                      },
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "ssmmessages:CreateControlChannel",
+                                "ssmmessages:OpenControlChannel",
+                                "ssmmessages:CreateDataChannel",
+                                "ssmmessages:OpenDataChannel"
+                              ],
+                              "Resource": "*"
+                            },
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogGroups",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents"
+                              ],
+                              "Resource": "*"
+                            }
+                          ]
+                        },
+                        "policyName": "ExecuteCommand"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.56.0"
+                }
+              },
+              "EnvControllerRole": {
+                "id": "EnvControllerRole",
+                "path": "Stack/Template/EnvControllerRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": [
+                              "lambda.amazonaws.com"
+                            ]
+                          },
+                          "Action": [
+                            "sts:AssumeRole"
+                          ]
+                        }
+                      ]
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                      }
+                    ],
+                    "path": "/",
+                    "policies": [
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "cloudformation:DescribeStacks",
+                                "cloudformation:UpdateStack"
+                              ],
+                              "Resource": {
+                                "Fn::Sub": "arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${AppName}-${EnvName}/*"
+                              },
+                              "Condition": {
+                                "StringEquals": {
+                                  "cloudformation:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "cloudformation:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "policyName": "EnvControllerStackUpdate"
+                      },
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "iam:PassRole"
+                              ],
+                              "Resource": {
+                                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${AppName}-${EnvName}-CFNExecutionRole"
+                              },
+                              "Condition": {
+                                "StringEquals": {
+                                  "iam:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "iam:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "policyName": "EnvControllerRolePass"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.56.0"
+                }
+              },
+              "EnvControllerFunction": {
+                "id": "EnvControllerFunction",
+                "path": "Stack/Template/EnvControllerFunction",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+                      "s3Key": "manual/scripts/custom-resources/envcontrollerfunction/3ffcf03598029891816b7ce2d1ff14fdd8079af4406a0cfeff1d4aa0109dcd7d.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": "EnvControllerRole.Arn"
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 512,
+                    "runtime": "nodejs16.x",
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.56.0"
+                }
+              },
+              "EnvControllerAction": {
+                "id": "EnvControllerAction",
+                "path": "Stack/Template/EnvControllerAction",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.56.0"
+                }
+              },
+              "TaskDefinition": {
+                "id": "TaskDefinition",
+                "path": "Stack/Template/TaskDefinition",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ECS::TaskDefinition",
+                  "aws:cdk:cloudformation:props": {
+                    "containerDefinitions": [
+                      {
+                        "environment": [
+                          {
+                            "name": "COPILOT_APPLICATION_NAME",
+                            "value": {
+                              "Fn::Sub": "${AppName}"
+                            }
+                          },
+                          {
+                            "name": "COPILOT_SERVICE_DISCOVERY_ENDPOINT",
+                            "value": "test.demo.local"
+                          },
+                          {
+                            "name": "COPILOT_ENVIRONMENT_NAME",
+                            "value": {
+                              "Fn::Sub": "${EnvName}"
+                            }
+                          },
+                          {
+                            "name": "COPILOT_SERVICE_NAME",
+                            "value": {
+                              "Fn::Sub": "${WorkloadName}"
+                            }
+                          },
+                          {
+                            "name": "COPILOT_LB_DNS",
+                            "value": {
+                              "Fn::GetAtt": "EnvControllerAction.PublicLoadBalancerDNSName"
+                            }
+                          }
+                        ],
+                        "environmentFiles": [
+                          {
+                            "Fn::If": [
+                              "HasEnvFile",
+                              {
+                                "Type": "s3",
+                                "Value": {
+                                  "Ref": "EnvFileARN"
+                                }
+                              },
+                              {
+                                "Ref": "AWS::NoValue"
+                              }
+                            ]
+                          }
+                        ],
+                        "image": {
+                          "Ref": "ContainerImage"
+                        },
+                        "logConfiguration": {
+                          "logDriver": "awslogs",
+                          "options": {
+                            "awslogs-region": {
+                              "Ref": "AWS::Region"
+                            },
+                            "awslogs-group": {
+                              "Ref": "LogGroup"
+                            },
+                            "awslogs-stream-prefix": "copilot"
+                          }
+                        },
+                        "name": {
+                          "Ref": "WorkloadName"
+                        },
+                        "portMappings": [
+                          {
+                            "containerPort": 80,
+                            "name": "target",
+                            "protocol": "tcp"
+                          }
+                        ]
+                      },
+                      {
+                        "environment": [
+                          {
+                            "name": "COPILOT_APPLICATION_NAME",
+                            "value": {
+                              "Fn::Sub": "${AppName}"
+                            }
+                          },
+                          {
+                            "name": "COPILOT_SERVICE_DISCOVERY_ENDPOINT",
+                            "value": "test.demo.local"
+                          },
+                          {
+                            "name": "COPILOT_ENVIRONMENT_NAME",
+                            "value": {
+                              "Fn::Sub": "${EnvName}"
+                            }
+                          },
+                          {
+                            "name": "COPILOT_SERVICE_NAME",
+                            "value": {
+                              "Fn::Sub": "${WorkloadName}"
+                            }
+                          },
+                          {
+                            "name": "COPILOT_LB_DNS",
+                            "value": {
+                              "Fn::GetAtt": "EnvControllerAction.PublicLoadBalancerDNSName"
+                            }
+                          }
+                        ],
+                        "environmentFiles": [
+                          {
+                            "Fn::If": [
+                              "HasfrontendEnvFile",
+                              {
+                                "Type": "s3",
+                                "Value": {
+                                  "Ref": "frontendEnvFileARN"
+                                }
+                              },
+                              {
+                                "Ref": "AWS::NoValue"
+                              }
+                            ]
+                          }
+                        ],
+                        "image": ":latest",
+                        "logConfiguration": {
+                          "logDriver": "awslogs",
+                          "options": {
+                            "awslogs-region": {
+                              "Ref": "AWS::Region"
+                            },
+                            "awslogs-group": {
+                              "Ref": "LogGroup"
+                            },
+                            "awslogs-stream-prefix": "copilot"
+                          }
+                        },
+                        "name": "frontend",
+                        "portMappings": [
+                          {
+                            "containerPort": 8080,
+                            "protocol": "tcp"
+                          }
+                        ]
+                      }
+                    ],
+                    "cpu": {
+                      "Ref": "TaskCPU"
+                    },
+                    "executionRoleArn": {
+                      "Fn::GetAtt": "ExecutionRole.Arn"
+                    },
+                    "family": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "AppName"
+                          },
+                          "-",
+                          {
+                            "Ref": "EnvName"
+                          },
+                          "-",
+                          {
+                            "Ref": "WorkloadName"
+                          }
+                        ]
+                      ]
+                    },
+                    "memory": {
+                      "Ref": "TaskMemory"
+                    },
+                    "networkMode": "awsvpc",
+                    "requiresCompatibilities": [
+                      "FARGATE"
+                    ],
+                    "taskRoleArn": {
+                      "Fn::GetAtt": "TaskRole.Arn"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.CfnTaskDefinition",
+                  "version": "2.56.0"
+                }
+              },
+              "DiscoveryService": {
+                "id": "DiscoveryService",
+                "path": "Stack/Template/DiscoveryService",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ServiceDiscovery::Service",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Discovery Service for the Copilot services",
+                    "dnsConfig": {
+                      "dnsRecords": [
+                        {
+                          "ttl": 10,
+                          "type": "A"
+                        },
+                        {
+                          "ttl": 10,
+                          "type": "SRV"
+                        }
+                      ],
+                      "routingPolicy": "MULTIVALUE"
+                    },
+                    "healthCheckCustomConfig": {
+                      "failureThreshold": 1
+                    },
+                    "name": {
+                      "Ref": "WorkloadName"
+                    },
+                    "namespaceId": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-ServiceDiscoveryNamespaceID"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_servicediscovery.CfnService",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBSecurityGroup": {
+                "id": "NLBSecurityGroup",
+                "path": "Stack/Template/NLBSecurityGroup",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "Allow access from the network load balancer to service",
+                    "securityGroupIngress": [
+                      {
+                        "cidrIp": "10.0.1.0/24",
+                        "description": "Ingress to allow access from Network Load Balancer subnet",
+                        "fromPort": 80,
+                        "ipProtocol": "TCP",
+                        "toPort": 80
+                      },
+                      {
+                        "cidrIp": "10.0.0.0/24",
+                        "description": "Ingress to allow access from Network Load Balancer subnet",
+                        "fromPort": 80,
+                        "ipProtocol": "TCP",
+                        "toPort": 80
+                      }
+                    ],
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": {
+                          "Fn::Sub": "copilot-${AppName}-${EnvName}-${WorkloadName}-nlb"
+                        }
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.56.0"
+                }
+              },
+              "TargetGroup": {
+                "id": "TargetGroup",
+                "path": "Stack/Template/TargetGroup",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "healthCheckPath": "/",
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "deregistration_delay.timeout_seconds",
+                        "value": "60"
+                      },
+                      {
+                        "key": "stickiness.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "targetType": "ip",
+                    "vpcId": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.56.0"
+                }
+              },
+              "TargetGroup1": {
+                "id": "TargetGroup1",
+                "path": "Stack/Template/TargetGroup1",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "healthCheckPath": "/",
+                    "port": 8080,
+                    "protocol": "HTTP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "deregistration_delay.timeout_seconds",
+                        "value": "60"
+                      },
+                      {
+                        "key": "stickiness.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "targetType": "ip",
+                    "vpcId": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.56.0"
+                }
+              },
+              "TargetGroup2": {
+                "id": "TargetGroup2",
+                "path": "Stack/Template/TargetGroup2",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "healthCheckPath": "/",
+                    "port": 8080,
+                    "protocol": "HTTP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "deregistration_delay.timeout_seconds",
+                        "value": "60"
+                      },
+                      {
+                        "key": "stickiness.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "targetType": "ip",
+                    "vpcId": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBTargetGroup": {
+                "id": "NLBTargetGroup",
+                "path": "Stack/Template/NLBTargetGroup",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "port": 80,
+                    "protocol": "TCP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "deregistration_delay.timeout_seconds",
+                        "value": "60"
+                      }
+                    ],
+                    "targetType": "ip",
+                    "vpcId": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.56.0"
+                }
+              },
+              "Service": {
+                "id": "Service",
+                "path": "Stack/Template/Service",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ECS::Service",
+                  "aws:cdk:cloudformation:props": {
+                    "cluster": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${AppName}-${EnvName}-ClusterId"
+                      }
+                    },
+                    "deploymentConfiguration": {
+                      "alarms": {
+                        "alarmNames": [],
+                        "enable": false,
+                        "rollback": true
+                      },
+                      "deploymentCircuitBreaker": {
+                        "enable": true,
+                        "rollback": true
+                      },
+                      "maximumPercent": 200,
+                      "minimumHealthyPercent": 100
+                    },
+                    "desiredCount": {
+                      "Ref": "TaskCount"
+                    },
+                    "enableExecuteCommand": true,
+                    "healthCheckGracePeriodSeconds": 60,
+                    "launchType": "FARGATE",
+                    "loadBalancers": [
+                      {
+                        "containerName": "admin",
+                        "containerPort": 80,
+                        "targetGroupArn": {
+                          "Ref": "TargetGroup"
+                        }
+                      },
+                      {
+                        "containerName": "frontend",
+                        "containerPort": 8080,
+                        "targetGroupArn": {
+                          "Ref": "TargetGroup1"
+                        }
+                      },
+                      {
+                        "containerName": "frontend",
+                        "containerPort": 8080,
+                        "targetGroupArn": {
+                          "Ref": "TargetGroup2"
+                        }
+                      },
+                      {
+                        "containerName": "admin",
+                        "containerPort": 80,
+                        "targetGroupArn": {
+                          "Ref": "NLBTargetGroup"
+                        }
+                      }
+                    ],
+                    "networkConfiguration": {
+                      "awsvpcConfiguration": {
+                        "assignPublicIp": "ENABLED",
+                        "securityGroups": [
+                          {
+                            "Fn::ImportValue": {
+                              "Fn::Sub": "${AppName}-${EnvName}-EnvironmentSecurityGroup"
+                            }
+                          },
+                          {
+                            "Ref": "NLBSecurityGroup"
+                          }
+                        ],
+                        "subnets": {
+                          "Fn::Split": [
+                            ",",
+                            {
+                              "Fn::ImportValue": {
+                                "Fn::Sub": "${AppName}-${EnvName}-PublicSubnets"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "platformVersion": "LATEST",
+                    "propagateTags": "SERVICE",
+                    "serviceConnectConfiguration": {
+                      "enabled": true,
+                      "logConfiguration": {
+                        "logDriver": "awslogs",
+                        "options": {
+                          "awslogs-region": {
+                            "Ref": "AWS::Region"
+                          },
+                          "awslogs-group": {
+                            "Ref": "LogGroup"
+                          },
+                          "awslogs-stream-prefix": "copilot"
+                        }
+                      },
+                      "namespace": "test.demo.local",
+                      "services": [
+                        {
+                          "clientAliases": [
+                            {
+                              "dnsName": {
+                                "Ref": "WorkloadName"
+                              },
+                              "port": {
+                                "Ref": "TargetPort"
+                              }
+                            }
+                          ],
+                          "discoveryName": {
+                            "Fn::Join": [
+                              "-",
+                              [
+                                {
+                                  "Ref": "WorkloadName"
+                                },
+                                "sc"
+                              ]
+                            ]
+                          },
+                          "portName": "target"
+                        }
+                      ]
+                    },
+                    "serviceRegistries": [
+                      {
+                        "port": {
+                          "Ref": "TargetPort"
+                        },
+                        "registryArn": {
+                          "Fn::GetAtt": "DiscoveryService.Arn"
+                        }
+                      }
+                    ],
+                    "taskDefinition": {
+                      "Ref": "TaskDefinition"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.CfnService",
+                  "version": "2.56.0"
+                }
+              },
+              "RulePriorityFunctionRole": {
+                "id": "RulePriorityFunctionRole",
+                "path": "Stack/Template/RulePriorityFunctionRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": [
+                              "lambda.amazonaws.com"
+                            ]
+                          },
+                          "Action": [
+                            "sts:AssumeRole"
+                          ]
+                        }
+                      ]
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                      }
+                    ],
+                    "path": "/",
+                    "policies": [
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Effect": "Allow",
+                              "Action": [
+                                "elasticloadbalancing:DescribeRules"
+                              ],
+                              "Resource": "*"
+                            }
+                          ]
+                        },
+                        "policyName": "RulePriorityGeneratorAccess"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.56.0"
+                }
+              },
+              "RulePriorityFunction": {
+                "id": "RulePriorityFunction",
+                "path": "Stack/Template/RulePriorityFunction",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+                      "s3Key": "manual/scripts/custom-resources/rulepriorityfunction/ac6830d3d4de8167bed1ce48eaf073ccbffe41076a1f88ea5c09b7b0ad71cb14.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": "RulePriorityFunctionRole.Arn"
+                    },
+                    "handler": "index.nextAvailableRulePriorityHandler",
+                    "memorySize": 512,
+                    "runtime": "nodejs16.x",
+                    "timeout": 600
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPRuleWithDomainPriorityAction": {
+                "id": "HTTPRuleWithDomainPriorityAction",
+                "path": "Stack/Template/HTTPRuleWithDomainPriorityAction",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPListenerRuleWithDomain": {
+                "id": "HTTPListenerRuleWithDomain",
+                "path": "Stack/Template/HTTPListenerRuleWithDomain",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+                  "aws:cdk:cloudformation:props": {
+                    "actions": [
+                      {
+                        "redirectConfig": {
+                          "host": "#{host}",
+                          "path": "/#{path}",
+                          "port": "443",
+                          "protocol": "HTTPS",
+                          "query": "#{query}",
+                          "statusCode": "HTTP_301"
+                        },
+                        "type": "redirect"
+                      }
+                    ],
+                    "conditions": [
+                      {
+                        "field": "host-header",
+                        "hostHeaderConfig": {
+                          "values": [
+                            "efekarakustest.com"
+                          ]
+                        }
+                      },
+                      {
+                        "field": "path-pattern",
+                        "pathPatternConfig": {
+                          "values": [
+                            "/*"
+                          ]
+                        }
+                      }
+                    ],
+                    "listenerArn": {
+                      "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+                    },
+                    "priority": {
+                      "Fn::GetAtt": "HTTPRuleWithDomainPriorityAction.Priority"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListenerRule",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPSRulePriorityAction": {
+                "id": "HTTPSRulePriorityAction",
+                "path": "Stack/Template/HTTPSRulePriorityAction",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPSListenerRule": {
+                "id": "HTTPSListenerRule",
+                "path": "Stack/Template/HTTPSListenerRule",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+                  "aws:cdk:cloudformation:props": {
+                    "actions": [
+                      {
+                        "targetGroupArn": {
+                          "Ref": "TargetGroup"
+                        },
+                        "type": "forward"
+                      }
+                    ],
+                    "conditions": [
+                      {
+                        "field": "host-header",
+                        "hostHeaderConfig": {
+                          "values": [
+                            "efekarakustest.com"
+                          ]
+                        }
+                      },
+                      {
+                        "field": "path-pattern",
+                        "pathPatternConfig": {
+                          "values": [
+                            "/*"
+                          ]
+                        }
+                      }
+                    ],
+                    "listenerArn": {
+                      "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+                    },
+                    "priority": {
+                      "Fn::GetAtt": "HTTPSRulePriorityAction.Priority"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListenerRule",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPListenerRuleWithDomain1": {
+                "id": "HTTPListenerRuleWithDomain1",
+                "path": "Stack/Template/HTTPListenerRuleWithDomain1",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+                  "aws:cdk:cloudformation:props": {
+                    "actions": [
+                      {
+                        "redirectConfig": {
+                          "host": "#{host}",
+                          "path": "/#{path}",
+                          "port": "443",
+                          "protocol": "HTTPS",
+                          "query": "#{query}",
+                          "statusCode": "HTTP_301"
+                        },
+                        "type": "redirect"
+                      }
+                    ],
+                    "conditions": [
+                      {
+                        "field": "host-header",
+                        "hostHeaderConfig": {
+                          "values": [
+                            "frontend.efekarakustest.com"
+                          ]
+                        }
+                      },
+                      {
+                        "field": "path-pattern",
+                        "pathPatternConfig": {
+                          "values": [
+                            "/*"
+                          ]
+                        }
+                      }
+                    ],
+                    "listenerArn": {
+                      "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+                    },
+                    "priority": {
+                      "Fn::GetAtt": "HTTPRuleWithDomainPriorityAction.Priority1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListenerRule",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPSListenerRule1": {
+                "id": "HTTPSListenerRule1",
+                "path": "Stack/Template/HTTPSListenerRule1",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+                  "aws:cdk:cloudformation:props": {
+                    "actions": [
+                      {
+                        "targetGroupArn": {
+                          "Ref": "TargetGroup1"
+                        },
+                        "type": "forward"
+                      }
+                    ],
+                    "conditions": [
+                      {
+                        "field": "host-header",
+                        "hostHeaderConfig": {
+                          "values": [
+                            "frontend.efekarakustest.com"
+                          ]
+                        }
+                      },
+                      {
+                        "field": "path-pattern",
+                        "pathPatternConfig": {
+                          "values": [
+                            "/*"
+                          ]
+                        }
+                      }
+                    ],
+                    "listenerArn": {
+                      "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+                    },
+                    "priority": {
+                      "Fn::GetAtt": "HTTPSRulePriorityAction.Priority1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListenerRule",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPListenerRuleWithDomain2": {
+                "id": "HTTPListenerRuleWithDomain2",
+                "path": "Stack/Template/HTTPListenerRuleWithDomain2",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+                  "aws:cdk:cloudformation:props": {
+                    "actions": [
+                      {
+                        "redirectConfig": {
+                          "host": "#{host}",
+                          "path": "/#{path}",
+                          "port": "443",
+                          "protocol": "HTTPS",
+                          "query": "#{query}",
+                          "statusCode": "HTTP_301"
+                        },
+                        "type": "redirect"
+                      }
+                    ],
+                    "conditions": [
+                      {
+                        "field": "host-header",
+                        "hostHeaderConfig": {
+                          "values": [
+                            "efekarakustest.com"
+                          ]
+                        }
+                      },
+                      {
+                        "field": "path-pattern",
+                        "pathPatternConfig": {
+                          "values": [
+                            "/_healthcheck",
+                            "/_healthcheck/*"
+                          ]
+                        }
+                      }
+                    ],
+                    "listenerArn": {
+                      "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+                    },
+                    "priority": {
+                      "Fn::GetAtt": "HTTPRuleWithDomainPriorityAction.Priority2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListenerRule",
+                  "version": "2.56.0"
+                }
+              },
+              "HTTPSListenerRule2": {
+                "id": "HTTPSListenerRule2",
+                "path": "Stack/Template/HTTPSListenerRule2",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+                  "aws:cdk:cloudformation:props": {
+                    "actions": [
+                      {
+                        "targetGroupArn": {
+                          "Ref": "TargetGroup2"
+                        },
+                        "type": "forward"
+                      }
+                    ],
+                    "conditions": [
+                      {
+                        "field": "host-header",
+                        "hostHeaderConfig": {
+                          "values": [
+                            "efekarakustest.com"
+                          ]
+                        }
+                      },
+                      {
+                        "field": "path-pattern",
+                        "pathPatternConfig": {
+                          "values": [
+                            "/_healthcheck",
+                            "/_healthcheck/*"
+                          ]
+                        }
+                      }
+                    ],
+                    "listenerArn": {
+                      "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+                    },
+                    "priority": {
+                      "Fn::GetAtt": "HTTPSRulePriorityAction.Priority2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListenerRule",
+                  "version": "2.56.0"
+                }
+              },
+              "PublicNetworkLoadBalancer": {
+                "id": "PublicNetworkLoadBalancer",
+                "path": "Stack/Template/PublicNetworkLoadBalancer",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+                  "aws:cdk:cloudformation:props": {
+                    "scheme": "internet-facing",
+                    "subnetMappings": [
+                      {
+                        "allocationId": {
+                          "Fn::GetAtt": [
+                            "ElasticIP1",
+                            "AllocationId"
+                          ]
+                        },
+                        "subnetId": {
+                          "Fn::Select": [
+                            0,
+                            {
+                              "Fn::Split": [
+                                ",",
+                                {
+                                  "Fn::ImportValue": "demo-test-PublicSubnets"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "allocationId": {
+                          "Fn::GetAtt": [
+                            "ElasticIP2",
+                            "AllocationId"
+                          ]
+                        },
+                        "subnetId": {
+                          "Fn::Select": [
+                            1,
+                            {
+                              "Fn::Split": [
+                                ",",
+                                {
+                                  "Fn::ImportValue": "demo-test-PublicSubnets"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "subnets": {
+                      "Fn::Split": [
+                        ",",
+                        {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${AppName}-${EnvName}-PublicSubnets"
+                          }
+                        }
+                      ]
+                    },
+                    "type": "network"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBCertValidatorRole": {
+                "id": "NLBCertValidatorRole",
+                "path": "Stack/Template/NLBCertValidatorRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": [
+                              "lambda.amazonaws.com"
+                            ]
+                          },
+                          "Action": [
+                            "sts:AssumeRole"
+                          ]
+                        }
+                      ]
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                      }
+                    ],
+                    "path": "/",
+                    "policies": [
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Sid": "AllowAssumeRole",
+                              "Effect": "Allow",
+                              "Action": "sts:AssumeRole",
+                              "Resource": "*"
+                            },
+                            {
+                              "Sid": "EnvHostedZoneUpdateAndWait",
+                              "Effect": "Allow",
+                              "Action": "route53:ChangeResourceRecordSets",
+                              "Resource": {
+                                "Fn::Sub": [
+                                  "arn:${AWS::Partition}:route53:::hostedzone/${EnvHostedZone}",
+                                  {
+                                    "EnvHostedZone": {
+                                      "Fn::ImportValue": {
+                                        "Fn::Sub": "${AppName}-${EnvName}-HostedZone"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "Sid": "EnvHostedZoneRead",
+                              "Effect": "Allow",
+                              "Action": [
+                                "route53:ListResourceRecordSets",
+                                "route53:GetChange"
+                              ],
+                              "Resource": "*"
+                            },
+                            {
+                              "Sid": "ServiceCertificateDelete",
+                              "Effect": "Allow",
+                              "Action": "acm:DeleteCertificate",
+                              "Resource": "*",
+                              "Condition": {
+                                "StringEquals": {
+                                  "aws:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "aws:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  },
+                                  "aws:ResourceTag/copilot-service": {
+                                    "Fn::Sub": "${WorkloadName}"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "Sid": "TaggedResourcesRead",
+                              "Effect": "Allow",
+                              "Action": "tag:GetResources",
+                              "Resource": "*"
+                            },
+                            {
+                              "Sid": "ServiceCertificateCreate",
+                              "Effect": "Allow",
+                              "Action": [
+                                "acm:RequestCertificate",
+                                "acm:AddTagsToCertificate"
+                              ],
+                              "Resource": "*",
+                              "Condition": {
+                                "StringEquals": {
+                                  "aws:ResourceTag/copilot-application": {
+                                    "Fn::Sub": "${AppName}"
+                                  },
+                                  "aws:ResourceTag/copilot-environment": {
+                                    "Fn::Sub": "${EnvName}"
+                                  },
+                                  "aws:ResourceTag/copilot-service": {
+                                    "Fn::Sub": "${WorkloadName}"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "Sid": "CertificateRead",
+                              "Effect": "Allow",
+                              "Action": "acm:DescribeCertificate",
+                              "Resource": "*"
+                            }
+                          ]
+                        },
+                        "policyName": "NLBCertValidatorPolicy"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBCertValidatorFunction": {
+                "id": "NLBCertValidatorFunction",
+                "path": "Stack/Template/NLBCertValidatorFunction",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+                      "s3Key": "manual/scripts/custom-resources/nlbcertvalidatorfunction/6e7a186146b284ece77c5fff8a71907deafe54398ffa2ced0a496b57317bac2d.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": "NLBCertValidatorRole.Arn"
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 512,
+                    "runtime": "nodejs16.x",
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBCertValidatorAction": {
+                "id": "NLBCertValidatorAction",
+                "path": "Stack/Template/NLBCertValidatorAction",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBListener": {
+                "id": "NLBListener",
+                "path": "Stack/Template/NLBListener",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
+                  "aws:cdk:cloudformation:props": {
+                    "defaultActions": [
+                      {
+                        "targetGroupArn": {
+                          "Ref": "NLBTargetGroup"
+                        },
+                        "type": "forward"
+                      }
+                    ],
+                    "loadBalancerArn": {
+                      "Ref": "PublicNetworkLoadBalancer"
+                    },
+                    "certificates": [
+                      {
+                        "certificateArn": {
+                          "Ref": "NLBCertValidatorAction"
+                        }
+                      }
+                    ],
+                    "port": 443,
+                    "protocol": "TLS",
+                    "sslPolicy": "ELBSecurityPolicy-TLS13-1-2-2021-06"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListener",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBCustomDomainRole": {
+                "id": "NLBCustomDomainRole",
+                "path": "Stack/Template/NLBCustomDomainRole",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": [
+                              "lambda.amazonaws.com"
+                            ]
+                          },
+                          "Action": [
+                            "sts:AssumeRole"
+                          ]
+                        }
+                      ]
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                      }
+                    ],
+                    "path": "/",
+                    "policies": [
+                      {
+                        "policyDocument": {
+                          "Version": "2012-10-17",
+                          "Statement": [
+                            {
+                              "Sid": "AllowAssumeRole",
+                              "Effect": "Allow",
+                              "Action": "sts:AssumeRole",
+                              "Resource": "*"
+                            },
+                            {
+                              "Sid": "EnvHostedZoneUpdateAndWait",
+                              "Effect": "Allow",
+                              "Action": "route53:ChangeResourceRecordSets",
+                              "Resource": {
+                                "Fn::Sub": [
+                                  "arn:${AWS::Partition}:route53:::hostedzone/${EnvHostedZone}",
+                                  {
+                                    "EnvHostedZone": {
+                                      "Fn::ImportValue": {
+                                        "Fn::Sub": "${AppName}-${EnvName}-HostedZone"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "Sid": "EnvHostedZoneRead",
+                              "Effect": "Allow",
+                              "Action": [
+                                "route53:ListResourceRecordSets",
+                                "route53:GetChange"
+                              ],
+                              "Resource": "*"
+                            }
+                          ]
+                        },
+                        "policyName": "NLBCustomDomainPolicy"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBCustomDomainFunction": {
+                "id": "NLBCustomDomainFunction",
+                "path": "Stack/Template/NLBCustomDomainFunction",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+                      "s3Key": "manual/scripts/custom-resources/nlbcustomdomainfunction/3ea3095fd0bf94bb861865b736cc331a144d8785348a9f6b77a0bb95ce083ca2.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": "NLBCustomDomainRole.Arn"
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 512,
+                    "runtime": "nodejs16.x",
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.56.0"
+                }
+              },
+              "NLBCustomDomainAction": {
+                "id": "NLBCustomDomainAction",
+                "path": "Stack/Template/NLBCustomDomainAction",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.56.0"
+                }
+              },
+              "AddonsStack": {
+                "id": "AddonsStack",
+                "path": "Stack/Template/AddonsStack",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFormation::Stack",
+                  "aws:cdk:cloudformation:props": {
+                    "templateUrl": {
+                      "Ref": "AddonsTemplateURL"
+                    },
+                    "parameters": {
+                      "App": {
+                        "Ref": "AppName"
+                      },
+                      "Env": {
+                        "Ref": "EnvName"
+                      },
+                      "Name": {
+                        "Ref": "WorkloadName"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnStack",
+                  "version": "2.56.0"
+                }
+              },
+              "$Hooks": {
+                "id": "$Hooks",
+                "path": "Stack/Template/$Hooks",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.1.287"
+                }
+              },
+              "$Ouputs": {
+                "id": "$Ouputs",
+                "path": "Stack/Template/$Ouputs",
+                "children": {
+                  "DiscoveryServiceARN": {
+                    "id": "DiscoveryServiceARN",
+                    "path": "Stack/Template/$Ouputs/DiscoveryServiceARN",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnOutput",
+                      "version": "2.56.0"
+                    }
+                  },
+                  "PublicNetworkLoadBalancerDNSName": {
+                    "id": "PublicNetworkLoadBalancerDNSName",
+                    "path": "Stack/Template/$Ouputs/PublicNetworkLoadBalancerDNSName",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnOutput",
+                      "version": "2.56.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.1.287"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.cloudformation_include.CfnInclude",
+              "version": "2.56.0"
+            }
+          },
+          "ElasticIP1": {
+            "id": "ElasticIP1",
+            "path": "Stack/ElasticIP1",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+              "aws:cdk:cloudformation:props": {}
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+              "version": "2.56.0"
+            }
+          },
+          "ElasticIP2": {
+            "id": "ElasticIP2",
+            "path": "Stack/ElasticIP2",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+              "aws:cdk:cloudformation:props": {}
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+              "version": "2.56.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "Stack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.56.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "Stack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.56.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.56.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.287"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.56.0"
+    }
+  }
+}

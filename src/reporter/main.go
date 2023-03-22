@@ -1,11 +1,13 @@
 package main
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 )
 
 func main() {
-    fmt.Println("success")
-    os.Exit(0)
+	for _, e := range os.Environ() {
+		fmt.Println(e)
+	}
+	os.Exit(0)
 }

@@ -4,7 +4,7 @@ const AWS = require('aws-sdk');
 const { Client } = require('pg');
 
 const client = new AWS.SecretsManager({
-    region: process.env.AWS_DEFAULT_REGION,
+  region: process.env.AWS_DEFAULT_REGION,
 });
 
 // Constants
@@ -19,7 +19,7 @@ app.get('/_healthcheck', (req, res) => {
 
 app.get('/', (req, res) => {
   console.log(JSON.stringify(process.env));
-  res.send('Hi 8');
+  res.send('Hi Proton folks!');
 });
 
 app.get('/genlogs', (req, res) => {
@@ -30,8 +30,8 @@ app.get('/genlogs', (req, res) => {
 
 app.get('/rds', async (req, res) => {
   console.log("received request at rds");
-  const dbSecret = await client.getSecretValue({SecretId: process.env.APPRUNNERCLUSTER_SECRET_ARN}).promise();
-  const {username, host, dbname, password, port} = JSON.parse(dbSecret.SecretString);
+  const dbSecret = await client.getSecretValue({ SecretId: process.env.APPRUNNERCLUSTER_SECRET_ARN }).promise();
+  const { username, host, dbname, password, port } = JSON.parse(dbSecret.SecretString);
   let response = null;
   try {
     const client = new Client({

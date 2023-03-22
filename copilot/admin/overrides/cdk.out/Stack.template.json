@@ -1,0 +1,2008 @@
+{
+ "Description": "CloudFormation template that represents a load balanced web service on Amazon ECS.",
+ "AWSTemplateFormatVersion": "2010-09-09",
+ "Metadata": {
+  "Manifest": "# The manifest for the \"admin\" service.\n# Read the full specification for the \"Load Balanced Web Service\" type at:\n#  https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/\n\n# Your service name will be used in naming your resources like log groups, ECS services, etc.\nname: admin\ntype: Load Balanced Web Service\n\n# Distribute traffic to your service.\nhttp:\n  path: \"/\"\n  alias: efekarakustest.com\n  additional_rules:\n    - alias: frontend.efekarakustest.com\n      path: \"/\"\n      target_container: frontend\n    - alias: efekarakustest.com\n      path: \"_healthcheck\"\n      target_port: 8080\n\nnlb:\n  alias: nlb.efekarakustest.com\n  port: 443/tls\n  target_port: 80\n\nimage:\n  build: admin/Dockerfile\n  port: 80\n\nsidecars:\n  frontend:\n    image:\n      build: src/frontend/Dockerfile\n    port: 8080\n\ncpu: 256 # Number of CPU units for the task.\nmemory: 512 # Amount of memory in MiB used by the task.\ncount: 1 # Number of tasks that should be running in your service.\nexec: true # Enable running commands in your container.\nnetwork:\n  connect: true # Enable Service Connect for intra-environment traffic between services.\n"
+ },
+ "Parameters": {
+  "AppName": {
+   "Type": "String"
+  },
+  "EnvName": {
+   "Type": "String"
+  },
+  "WorkloadName": {
+   "Type": "String"
+  },
+  "ContainerImage": {
+   "Type": "String"
+  },
+  "ContainerPort": {
+   "Type": "Number"
+  },
+  "TaskCPU": {
+   "Type": "String"
+  },
+  "TaskMemory": {
+   "Type": "String"
+  },
+  "TaskCount": {
+   "Type": "Number"
+  },
+  "DNSDelegated": {
+   "Type": "String",
+   "AllowedValues": [
+    true,
+    false
+   ]
+  },
+  "LogRetention": {
+   "Type": "Number"
+  },
+  "AddonsTemplateURL": {
+   "Type": "String",
+   "Default": "",
+   "Description": "URL of the addons nested stack template within the S3 bucket."
+  },
+  "EnvFileARN": {
+   "Type": "String",
+   "Default": "",
+   "Description": "URL of the environment file."
+  },
+  "frontendEnvFileARN": {
+   "Type": "String",
+   "Default": "",
+   "Description": "URL of the environment file for the frontend sidecar."
+  },
+  "TargetContainer": {
+   "Type": "String"
+  },
+  "TargetPort": {
+   "Type": "Number"
+  },
+  "NLBAliases": {
+   "Type": "String",
+   "Default": ""
+  },
+  "NLBPort": {
+   "Type": "String"
+  },
+  "HTTPSEnabled": {
+   "Type": "String",
+   "AllowedValues": [
+    true,
+    false
+   ]
+  },
+  "RulePath": {
+   "Type": "String"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Conditions": {
+  "IsGovCloud": {
+   "Fn::Equals": [
+    {
+     "Ref": "AWS::Partition"
+    },
+    "aws-us-gov"
+   ]
+  },
+  "HasAssociatedDomain": {
+   "Fn::Equals": [
+    {
+     "Ref": "DNSDelegated"
+    },
+    true
+   ]
+  },
+  "HasAddons": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AddonsTemplateURL"
+      },
+      ""
+     ]
+    }
+   ]
+  },
+  "HasEnvFile": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "EnvFileARN"
+      },
+      ""
+     ]
+    }
+   ]
+  },
+  "HasfrontendEnvFile": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "frontendEnvFileARN"
+      },
+      ""
+     ]
+    }
+   ]
+  }
+ },
+ "Resources": {
+  "LogGroup": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/copilot/",
+       {
+        "Ref": "AppName"
+       },
+       "-",
+       {
+        "Ref": "EnvName"
+       },
+       "-",
+       {
+        "Ref": "WorkloadName"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": {
+     "Ref": "LogRetention"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A CloudWatch log group to hold your service logs"
+   }
+  },
+  "ExecutionRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       },
+       "Action": "sts:AssumeRole"
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ssm:GetParameters"
+         ],
+         "Resource": [
+          {
+           "Fn::Sub": "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/*"
+          }
+         ],
+         "Condition": {
+          "StringEquals": {
+           "ssm:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "ssm:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           }
+          }
+         }
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "secretsmanager:GetSecretValue"
+         ],
+         "Resource": [
+          {
+           "Fn::Sub": "arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:*"
+          }
+         ],
+         "Condition": {
+          "StringEquals": {
+           "secretsmanager:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "secretsmanager:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           }
+          }
+         }
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "kms:Decrypt"
+         ],
+         "Resource": [
+          {
+           "Fn::Sub": "arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+          }
+         ]
+        }
+       ]
+      },
+      "PolicyName": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AppName"
+         },
+         "-",
+         {
+          "Ref": "EnvName"
+         },
+         "-",
+         {
+          "Ref": "WorkloadName"
+         },
+         "SecretsPolicy"
+        ]
+       ]
+      }
+     },
+     {
+      "Fn::If": [
+       "HasEnvFile",
+       {
+        "PolicyName": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Ref": "AppName"
+           },
+           "-",
+           {
+            "Ref": "EnvName"
+           },
+           "-",
+           {
+            "Ref": "WorkloadName"
+           },
+           "GetEnvFilePolicy"
+          ]
+         ]
+        },
+        "PolicyDocument": {
+         "Version": "2012-10-17",
+         "Statement": [
+          {
+           "Effect": "Allow",
+           "Action": [
+            "s3:GetObject"
+           ],
+           "Resource": [
+            {
+             "Ref": "EnvFileARN"
+            }
+           ]
+          },
+          {
+           "Effect": "Allow",
+           "Action": [
+            "s3:GetBucketLocation"
+           ],
+           "Resource": [
+            {
+             "Fn::Join": [
+              "",
+              [
+               "arn:",
+               {
+                "Ref": "AWS::Partition"
+               },
+               ":s3:::",
+               {
+                "Fn::Select": [
+                 0,
+                 {
+                  "Fn::Split": [
+                   "/",
+                   {
+                    "Fn::Select": [
+                     5,
+                     {
+                      "Fn::Split": [
+                       ":",
+                       {
+                        "Ref": "EnvFileARN"
+                       }
+                      ]
+                     }
+                    ]
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       },
+       {
+        "Ref": "AWS::NoValue"
+       }
+      ]
+     },
+     {
+      "Fn::If": [
+       "HasfrontendEnvFile",
+       {
+        "PolicyName": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Ref": "AppName"
+           },
+           "-",
+           {
+            "Ref": "EnvName"
+           },
+           "-",
+           {
+            "Ref": "WorkloadName"
+           },
+           "GetfrontendEnvFilePolicy"
+          ]
+         ]
+        },
+        "PolicyDocument": {
+         "Version": "2012-10-17",
+         "Statement": [
+          {
+           "Effect": "Allow",
+           "Action": [
+            "s3:GetObject"
+           ],
+           "Resource": [
+            {
+             "Ref": "frontendEnvFileARN"
+            }
+           ]
+          },
+          {
+           "Effect": "Allow",
+           "Action": [
+            "s3:GetBucketLocation"
+           ],
+           "Resource": [
+            {
+             "Fn::Join": [
+              "",
+              [
+               "arn:",
+               {
+                "Ref": "AWS::Partition"
+               },
+               ":s3:::",
+               {
+                "Fn::Select": [
+                 0,
+                 {
+                  "Fn::Split": [
+                   "/",
+                   {
+                    "Fn::Select": [
+                     5,
+                     {
+                      "Fn::Split": [
+                       ":",
+                       {
+                        "Ref": "frontendEnvFileARN"
+                       }
+                      ]
+                     }
+                    ]
+                   }
+                  ]
+                 }
+                ]
+               }
+              ]
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       },
+       {
+        "Ref": "AWS::NoValue"
+       }
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "An IAM Role for the Fargate agent to make AWS API calls on your behalf"
+   }
+  },
+  "TaskRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       },
+       "Action": "sts:AssumeRole"
+      }
+     ]
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Deny",
+         "Action": "iam:*",
+         "Resource": "*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": "sts:AssumeRole",
+         "Resource": [
+          {
+           "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/*"
+          }
+         ],
+         "Condition": {
+          "StringEquals": {
+           "iam:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "iam:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           }
+          }
+         }
+        }
+       ]
+      },
+      "PolicyName": "DenyIAMExceptTaggedRoles"
+     },
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenDataChannel"
+         ],
+         "Resource": "*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:PutLogEvents"
+         ],
+         "Resource": "*"
+        }
+       ]
+      },
+      "PolicyName": "ExecuteCommand"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "An IAM role to control permissions for the containers in your tasks"
+   }
+  },
+  "EnvControllerRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": [
+         "lambda.amazonaws.com"
+        ]
+       },
+       "Action": [
+        "sts:AssumeRole"
+       ]
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Path": "/",
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "cloudformation:DescribeStacks",
+          "cloudformation:UpdateStack"
+         ],
+         "Resource": {
+          "Fn::Sub": "arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${AppName}-${EnvName}/*"
+         },
+         "Condition": {
+          "StringEquals": {
+           "cloudformation:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "cloudformation:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           }
+          }
+         }
+        }
+       ]
+      },
+      "PolicyName": "EnvControllerStackUpdate"
+     },
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "iam:PassRole"
+         ],
+         "Resource": {
+          "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${AppName}-${EnvName}-CFNExecutionRole"
+         },
+         "Condition": {
+          "StringEquals": {
+           "iam:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "iam:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           }
+          }
+         }
+        }
+       ]
+      },
+      "PolicyName": "EnvControllerRolePass"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "An IAM role to update your environment stack"
+   }
+  },
+  "EnvControllerFunction": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+     "S3Key": "manual/scripts/custom-resources/envcontrollerfunction/3ffcf03598029891816b7ce2d1ff14fdd8079af4406a0cfeff1d4aa0109dcd7d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": "EnvControllerRole.Arn"
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Runtime": "nodejs16.x",
+    "Timeout": 900
+   }
+  },
+  "EnvControllerAction": {
+   "Type": "Custom::EnvControllerFunction",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": "EnvControllerFunction.Arn"
+    },
+    "Workload": {
+     "Ref": "WorkloadName"
+    },
+    "Aliases": [
+     "efekarakustest.com",
+     "frontend.efekarakustest.com"
+    ],
+    "EnvStack": {
+     "Fn::Sub": "${AppName}-${EnvName}"
+    },
+    "Parameters": [
+     "ALBWorkloads",
+     "Aliases"
+    ],
+    "EnvVersion": "v1.13.0"
+   },
+   "Metadata": {
+    "aws:copilot:description": "Update your environment's shared resources"
+   }
+  },
+  "TaskDefinition": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "COPILOT_APPLICATION_NAME",
+        "Value": {
+         "Fn::Sub": "${AppName}"
+        }
+       },
+       {
+        "Name": "COPILOT_SERVICE_DISCOVERY_ENDPOINT",
+        "Value": "test.demo.local"
+       },
+       {
+        "Name": "COPILOT_ENVIRONMENT_NAME",
+        "Value": {
+         "Fn::Sub": "${EnvName}"
+        }
+       },
+       {
+        "Name": "COPILOT_SERVICE_NAME",
+        "Value": {
+         "Fn::Sub": "${WorkloadName}"
+        }
+       },
+       {
+        "Name": "COPILOT_LB_DNS",
+        "Value": {
+         "Fn::GetAtt": "EnvControllerAction.PublicLoadBalancerDNSName"
+        }
+       }
+      ],
+      "EnvironmentFiles": [
+       {
+        "Fn::If": [
+         "HasEnvFile",
+         {
+          "Type": "s3",
+          "Value": {
+           "Ref": "EnvFileARN"
+          }
+         },
+         {
+          "Ref": "AWS::NoValue"
+         }
+        ]
+       }
+      ],
+      "Image": {
+       "Ref": "ContainerImage"
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        },
+        "awslogs-group": {
+         "Ref": "LogGroup"
+        },
+        "awslogs-stream-prefix": "copilot"
+       }
+      },
+      "Name": {
+       "Ref": "WorkloadName"
+      },
+      "PortMappings": [
+       {
+        "ContainerPort": 80,
+        "Name": "target",
+        "Protocol": "tcp"
+       }
+      ]
+     },
+     {
+      "Environment": [
+       {
+        "Name": "COPILOT_APPLICATION_NAME",
+        "Value": {
+         "Fn::Sub": "${AppName}"
+        }
+       },
+       {
+        "Name": "COPILOT_SERVICE_DISCOVERY_ENDPOINT",
+        "Value": "test.demo.local"
+       },
+       {
+        "Name": "COPILOT_ENVIRONMENT_NAME",
+        "Value": {
+         "Fn::Sub": "${EnvName}"
+        }
+       },
+       {
+        "Name": "COPILOT_SERVICE_NAME",
+        "Value": {
+         "Fn::Sub": "${WorkloadName}"
+        }
+       },
+       {
+        "Name": "COPILOT_LB_DNS",
+        "Value": {
+         "Fn::GetAtt": "EnvControllerAction.PublicLoadBalancerDNSName"
+        }
+       }
+      ],
+      "EnvironmentFiles": [
+       {
+        "Fn::If": [
+         "HasfrontendEnvFile",
+         {
+          "Type": "s3",
+          "Value": {
+           "Ref": "frontendEnvFileARN"
+          }
+         },
+         {
+          "Ref": "AWS::NoValue"
+         }
+        ]
+       }
+      ],
+      "Image": ":latest",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        },
+        "awslogs-group": {
+         "Ref": "LogGroup"
+        },
+        "awslogs-stream-prefix": "copilot"
+       }
+      },
+      "Name": "frontend",
+      "PortMappings": [
+       {
+        "ContainerPort": 8080,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": {
+     "Ref": "TaskCPU"
+    },
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": "ExecutionRole.Arn"
+    },
+    "Family": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AppName"
+       },
+       "-",
+       {
+        "Ref": "EnvName"
+       },
+       "-",
+       {
+        "Ref": "WorkloadName"
+       }
+      ]
+     ]
+    },
+    "Memory": {
+     "Ref": "TaskMemory"
+    },
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": "TaskRole.Arn"
+    }
+   },
+   "DependsOn": [
+    "LogGroup"
+   ],
+   "Metadata": {
+    "aws:copilot:description": "An ECS task definition to group your containers and run them on ECS"
+   }
+  },
+  "DiscoveryService": {
+   "Type": "AWS::ServiceDiscovery::Service",
+   "Properties": {
+    "Description": "Discovery Service for the Copilot services",
+    "DnsConfig": {
+     "DnsRecords": [
+      {
+       "TTL": 10,
+       "Type": "A"
+      },
+      {
+       "TTL": 10,
+       "Type": "SRV"
+      }
+     ],
+     "RoutingPolicy": "MULTIVALUE"
+    },
+    "HealthCheckCustomConfig": {
+     "FailureThreshold": 1
+    },
+    "Name": {
+     "Ref": "WorkloadName"
+    },
+    "NamespaceId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-ServiceDiscoveryNamespaceID"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "Service discovery for your services to communicate within the VPC"
+   }
+  },
+  "NLBSecurityGroup": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Allow access from the network load balancer to service",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "10.0.1.0/24",
+      "Description": "Ingress to allow access from Network Load Balancer subnet",
+      "FromPort": 80,
+      "IpProtocol": "TCP",
+      "ToPort": 80
+     },
+     {
+      "CidrIp": "10.0.0.0/24",
+      "Description": "Ingress to allow access from Network Load Balancer subnet",
+      "FromPort": 80,
+      "IpProtocol": "TCP",
+      "ToPort": 80
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": {
+       "Fn::Sub": "copilot-${AppName}-${EnvName}-${WorkloadName}-nlb"
+      }
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A security group for your network load balancer to route traffic to service"
+   }
+  },
+  "TargetGroup": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/",
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "60"
+     },
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A target group to connect the load balancer to your service"
+   }
+  },
+  "TargetGroup1": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/",
+    "Port": 8080,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "60"
+     },
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A target group to connect the load balancer to your service"
+   }
+  },
+  "TargetGroup2": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/",
+    "Port": 8080,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "60"
+     },
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A target group to connect the load balancer to your service"
+   }
+  },
+  "NLBTargetGroup": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "TCP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "60"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-VpcId"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A target group to connect the network load balancer to your service"
+   }
+  },
+  "Service": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-ClusterId"
+     }
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": true
+     },
+     "DeploymentCircuitBreaker": {
+      "Enable": true,
+      "Rollback": true
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 100
+    },
+    "DesiredCount": {
+     "Ref": "TaskCount"
+    },
+    "EnableExecuteCommand": true,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "admin",
+      "ContainerPort": 80,
+      "TargetGroupArn": {
+       "Ref": "TargetGroup"
+      }
+     },
+     {
+      "ContainerName": "frontend",
+      "ContainerPort": 8080,
+      "TargetGroupArn": {
+       "Ref": "TargetGroup1"
+      }
+     },
+     {
+      "ContainerName": "frontend",
+      "ContainerPort": 8080,
+      "TargetGroupArn": {
+       "Ref": "TargetGroup2"
+      }
+     },
+     {
+      "ContainerName": "admin",
+      "ContainerPort": 80,
+      "TargetGroupArn": {
+       "Ref": "NLBTargetGroup"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "ENABLED",
+      "SecurityGroups": [
+       {
+        "Fn::ImportValue": {
+         "Fn::Sub": "${AppName}-${EnvName}-EnvironmentSecurityGroup"
+        }
+       },
+       {
+        "Ref": "NLBSecurityGroup"
+       }
+      ],
+      "Subnets": {
+       "Fn::Split": [
+        ",",
+        {
+         "Fn::ImportValue": {
+          "Fn::Sub": "${AppName}-${EnvName}-PublicSubnets"
+         }
+        }
+       ]
+      }
+     }
+    },
+    "PlatformVersion": "LATEST",
+    "PropagateTags": "SERVICE",
+    "ServiceConnectConfiguration": {
+     "Enabled": true,
+     "LogConfiguration": {
+      "LogDriver": "awslogs",
+      "Options": {
+       "awslogs-region": {
+        "Ref": "AWS::Region"
+       },
+       "awslogs-group": {
+        "Ref": "LogGroup"
+       },
+       "awslogs-stream-prefix": "copilot"
+      }
+     },
+     "Namespace": "test.demo.local",
+     "Services": [
+      {
+       "ClientAliases": [
+        {
+         "DnsName": {
+          "Ref": "WorkloadName"
+         },
+         "Port": {
+          "Ref": "TargetPort"
+         }
+        }
+       ],
+       "DiscoveryName": {
+        "Fn::Join": [
+         "-",
+         [
+          {
+           "Ref": "WorkloadName"
+          },
+          "sc"
+         ]
+        ]
+       },
+       "PortName": "target"
+      }
+     ]
+    },
+    "ServiceRegistries": [
+     {
+      "Port": {
+       "Ref": "TargetPort"
+      },
+      "RegistryArn": {
+       "Fn::GetAtt": "DiscoveryService.Arn"
+      }
+     }
+    ],
+    "TaskDefinition": {
+     "Ref": "TaskDefinition"
+    }
+   },
+   "DependsOn": [
+    "HTTPListenerRuleWithDomain",
+    "HTTPListenerRuleWithDomain1",
+    "HTTPListenerRuleWithDomain2",
+    "HTTPSListenerRule",
+    "HTTPSListenerRule1",
+    "HTTPSListenerRule2",
+    "NLBListener"
+   ],
+   "Metadata": {
+    "aws:copilot:description": "An ECS service to run and maintain your tasks in the environment cluster"
+   }
+  },
+  "RulePriorityFunctionRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": [
+         "lambda.amazonaws.com"
+        ]
+       },
+       "Action": [
+        "sts:AssumeRole"
+       ]
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Path": "/",
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "elasticloadbalancing:DescribeRules"
+         ],
+         "Resource": "*"
+        }
+       ]
+      },
+      "PolicyName": "RulePriorityGeneratorAccess"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "An IAM Role to describe load balancer rules for assigning a priority"
+   }
+  },
+  "RulePriorityFunction": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+     "S3Key": "manual/scripts/custom-resources/rulepriorityfunction/ac6830d3d4de8167bed1ce48eaf073ccbffe41076a1f88ea5c09b7b0ad71cb14.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": "RulePriorityFunctionRole.Arn"
+    },
+    "Handler": "index.nextAvailableRulePriorityHandler",
+    "MemorySize": 512,
+    "Runtime": "nodejs16.x",
+    "Timeout": 600
+   }
+  },
+  "HTTPRuleWithDomainPriorityAction": {
+   "Type": "Custom::RulePriorityFunction",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": "RulePriorityFunction.Arn"
+    },
+    "RulePath": [
+     "/",
+     "/",
+     "_healthcheck"
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A custom resource assigning priority for HTTP listener rules"
+   }
+  },
+  "HTTPListenerRuleWithDomain": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "RedirectConfig": {
+       "Host": "#{host}",
+       "Path": "/#{path}",
+       "Port": "443",
+       "Protocol": "HTTPS",
+       "Query": "#{query}",
+       "StatusCode": "HTTP_301"
+      },
+      "Type": "redirect"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "host-header",
+      "HostHeaderConfig": {
+       "Values": [
+        "efekarakustest.com"
+       ]
+      }
+     },
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+    },
+    "Priority": {
+     "Fn::GetAtt": "HTTPRuleWithDomainPriorityAction.Priority"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "An HTTP listener rule that redirects HTTP to HTTPS"
+   }
+  },
+  "HTTPSRulePriorityAction": {
+   "Type": "Custom::RulePriorityFunction",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": "RulePriorityFunction.Arn"
+    },
+    "RulePath": [
+     "/",
+     "/",
+     "_healthcheck"
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "A custom resource assigning priority for HTTPS listener rules"
+   }
+  },
+  "HTTPSListenerRule": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "TargetGroup"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "host-header",
+      "HostHeaderConfig": {
+       "Values": [
+        "efekarakustest.com"
+       ]
+      }
+     },
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+    },
+    "Priority": {
+     "Fn::GetAtt": "HTTPSRulePriorityAction.Priority"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "An HTTPS listener rule for forwarding HTTPS traffic to your tasks"
+   }
+  },
+  "HTTPListenerRuleWithDomain1": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "RedirectConfig": {
+       "Host": "#{host}",
+       "Path": "/#{path}",
+       "Port": "443",
+       "Protocol": "HTTPS",
+       "Query": "#{query}",
+       "StatusCode": "HTTP_301"
+      },
+      "Type": "redirect"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "host-header",
+      "HostHeaderConfig": {
+       "Values": [
+        "frontend.efekarakustest.com"
+       ]
+      }
+     },
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+    },
+    "Priority": {
+     "Fn::GetAtt": "HTTPRuleWithDomainPriorityAction.Priority1"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "An HTTP listener rule that redirects HTTP to HTTPS"
+   }
+  },
+  "HTTPSListenerRule1": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "TargetGroup1"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "host-header",
+      "HostHeaderConfig": {
+       "Values": [
+        "frontend.efekarakustest.com"
+       ]
+      }
+     },
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+    },
+    "Priority": {
+     "Fn::GetAtt": "HTTPSRulePriorityAction.Priority1"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "An HTTPS listener rule for forwarding HTTPS traffic to your tasks"
+   }
+  },
+  "HTTPListenerRuleWithDomain2": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "RedirectConfig": {
+       "Host": "#{host}",
+       "Path": "/#{path}",
+       "Port": "443",
+       "Protocol": "HTTPS",
+       "Query": "#{query}",
+       "StatusCode": "HTTP_301"
+      },
+      "Type": "redirect"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "host-header",
+      "HostHeaderConfig": {
+       "Values": [
+        "efekarakustest.com"
+       ]
+      }
+     },
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/_healthcheck",
+        "/_healthcheck/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPListenerArn"
+    },
+    "Priority": {
+     "Fn::GetAtt": "HTTPRuleWithDomainPriorityAction.Priority2"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "An HTTP listener rule that redirects HTTP to HTTPS"
+   }
+  },
+  "HTTPSListenerRule2": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "TargetGroup2"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "host-header",
+      "HostHeaderConfig": {
+       "Values": [
+        "efekarakustest.com"
+       ]
+      }
+     },
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/_healthcheck",
+        "/_healthcheck/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Fn::GetAtt": "EnvControllerAction.HTTPSListenerArn"
+    },
+    "Priority": {
+     "Fn::GetAtt": "HTTPSRulePriorityAction.Priority2"
+    }
+   },
+   "Metadata": {
+    "aws:copilot:description": "An HTTPS listener rule for forwarding HTTPS traffic to your tasks"
+   }
+  },
+  "PublicNetworkLoadBalancer": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "Scheme": "internet-facing",
+    "SubnetMappings": [
+     {
+      "AllocationId": {
+       "Fn::GetAtt": [
+        "ElasticIP1",
+        "AllocationId"
+       ]
+      },
+      "SubnetId": {
+       "Fn::Select": [
+        0,
+        {
+         "Fn::Split": [
+          ",",
+          {
+           "Fn::ImportValue": "demo-test-PublicSubnets"
+          }
+         ]
+        }
+       ]
+      }
+     },
+     {
+      "AllocationId": {
+       "Fn::GetAtt": [
+        "ElasticIP2",
+        "AllocationId"
+       ]
+      },
+      "SubnetId": {
+       "Fn::Select": [
+        1,
+        {
+         "Fn::Split": [
+          ",",
+          {
+           "Fn::ImportValue": "demo-test-PublicSubnets"
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ],
+    "Type": "network"
+   },
+   "Metadata": {
+    "aws:copilot:description": "A Network Load Balancer to distribute public traffic to your service"
+   }
+  },
+  "NLBCertValidatorRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": [
+         "lambda.amazonaws.com"
+        ]
+       },
+       "Action": [
+        "sts:AssumeRole"
+       ]
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Path": "/",
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Sid": "AllowAssumeRole",
+         "Effect": "Allow",
+         "Action": "sts:AssumeRole",
+         "Resource": "*"
+        },
+        {
+         "Sid": "EnvHostedZoneUpdateAndWait",
+         "Effect": "Allow",
+         "Action": "route53:ChangeResourceRecordSets",
+         "Resource": {
+          "Fn::Sub": [
+           "arn:${AWS::Partition}:route53:::hostedzone/${EnvHostedZone}",
+           {
+            "EnvHostedZone": {
+             "Fn::ImportValue": {
+              "Fn::Sub": "${AppName}-${EnvName}-HostedZone"
+             }
+            }
+           }
+          ]
+         }
+        },
+        {
+         "Sid": "EnvHostedZoneRead",
+         "Effect": "Allow",
+         "Action": [
+          "route53:ListResourceRecordSets",
+          "route53:GetChange"
+         ],
+         "Resource": "*"
+        },
+        {
+         "Sid": "ServiceCertificateDelete",
+         "Effect": "Allow",
+         "Action": "acm:DeleteCertificate",
+         "Resource": "*",
+         "Condition": {
+          "StringEquals": {
+           "aws:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "aws:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           },
+           "aws:ResourceTag/copilot-service": {
+            "Fn::Sub": "${WorkloadName}"
+           }
+          }
+         }
+        },
+        {
+         "Sid": "TaggedResourcesRead",
+         "Effect": "Allow",
+         "Action": "tag:GetResources",
+         "Resource": "*"
+        },
+        {
+         "Sid": "ServiceCertificateCreate",
+         "Effect": "Allow",
+         "Action": [
+          "acm:RequestCertificate",
+          "acm:AddTagsToCertificate"
+         ],
+         "Resource": "*",
+         "Condition": {
+          "StringEquals": {
+           "aws:ResourceTag/copilot-application": {
+            "Fn::Sub": "${AppName}"
+           },
+           "aws:ResourceTag/copilot-environment": {
+            "Fn::Sub": "${EnvName}"
+           },
+           "aws:ResourceTag/copilot-service": {
+            "Fn::Sub": "${WorkloadName}"
+           }
+          }
+         }
+        },
+        {
+         "Sid": "CertificateRead",
+         "Effect": "Allow",
+         "Action": "acm:DescribeCertificate",
+         "Resource": "*"
+        }
+       ]
+      },
+      "PolicyName": "NLBCertValidatorPolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "An IAM role to request and validate a certificate for your service"
+   }
+  },
+  "NLBCertValidatorFunction": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+     "S3Key": "manual/scripts/custom-resources/nlbcertvalidatorfunction/6e7a186146b284ece77c5fff8a71907deafe54398ffa2ced0a496b57317bac2d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": "NLBCertValidatorRole.Arn"
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Runtime": "nodejs16.x",
+    "Timeout": 900
+   },
+   "Condition": "HasAssociatedDomain"
+  },
+  "NLBCertValidatorAction": {
+   "Type": "Custom::NLBCertValidatorFunction",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": "NLBCertValidatorFunction.Arn"
+    },
+    "LoadBalancerDNS": {
+     "Fn::GetAtt": "PublicNetworkLoadBalancer.DNSName"
+    },
+    "EnvHostedZoneId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-HostedZone"
+     }
+    },
+    "EnvName": {
+     "Ref": "EnvName"
+    },
+    "AppName": {
+     "Ref": "AppName"
+    },
+    "ServiceName": {
+     "Ref": "WorkloadName"
+    },
+    "RootDNSRole": "arn:aws:iam::615288112214:role/demo-DNSDelegationRole",
+    "DomainName": "efekarakustest.com",
+    "Aliases": [
+     "nlb.efekarakustest.com"
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "Request and validate the certificate for your Network Load Balancer"
+   },
+   "Condition": "HasAssociatedDomain"
+  },
+  "NLBListener": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "NLBTargetGroup"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "PublicNetworkLoadBalancer"
+    },
+    "Certificates": [
+     {
+      "CertificateArn": {
+       "Ref": "NLBCertValidatorAction"
+      }
+     }
+    ],
+    "Port": 443,
+    "Protocol": "TLS",
+    "SslPolicy": "ELBSecurityPolicy-TLS13-1-2-2021-06"
+   }
+  },
+  "NLBCustomDomainRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": [
+         "lambda.amazonaws.com"
+        ]
+       },
+       "Action": [
+        "sts:AssumeRole"
+       ]
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Path": "/",
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Sid": "AllowAssumeRole",
+         "Effect": "Allow",
+         "Action": "sts:AssumeRole",
+         "Resource": "*"
+        },
+        {
+         "Sid": "EnvHostedZoneUpdateAndWait",
+         "Effect": "Allow",
+         "Action": "route53:ChangeResourceRecordSets",
+         "Resource": {
+          "Fn::Sub": [
+           "arn:${AWS::Partition}:route53:::hostedzone/${EnvHostedZone}",
+           {
+            "EnvHostedZone": {
+             "Fn::ImportValue": {
+              "Fn::Sub": "${AppName}-${EnvName}-HostedZone"
+             }
+            }
+           }
+          ]
+         }
+        },
+        {
+         "Sid": "EnvHostedZoneRead",
+         "Effect": "Allow",
+         "Action": [
+          "route53:ListResourceRecordSets",
+          "route53:GetChange"
+         ],
+         "Resource": "*"
+        }
+       ]
+      },
+      "PolicyName": "NLBCustomDomainPolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "An IAM role to update the environment Route 53 hosted zone"
+   }
+  },
+  "NLBCustomDomainFunction": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "stackset-demo-infrastruc-pipelinebuiltartifactbuc-giewvxa6owtn",
+     "S3Key": "manual/scripts/custom-resources/nlbcustomdomainfunction/3ea3095fd0bf94bb861865b736cc331a144d8785348a9f6b77a0bb95ce083ca2.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": "NLBCustomDomainRole.Arn"
+    },
+    "Handler": "index.handler",
+    "MemorySize": 512,
+    "Runtime": "nodejs16.x",
+    "Timeout": 900
+   },
+   "Condition": "HasAssociatedDomain"
+  },
+  "NLBCustomDomainAction": {
+   "Type": "Custom::NLBCustomDomainFunction",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": "NLBCustomDomainFunction.Arn"
+    },
+    "LoadBalancerHostedZoneID": {
+     "Fn::GetAtt": "PublicNetworkLoadBalancer.CanonicalHostedZoneID"
+    },
+    "LoadBalancerDNS": {
+     "Fn::GetAtt": "PublicNetworkLoadBalancer.DNSName"
+    },
+    "EnvHostedZoneId": {
+     "Fn::ImportValue": {
+      "Fn::Sub": "${AppName}-${EnvName}-HostedZone"
+     }
+    },
+    "EnvName": {
+     "Ref": "EnvName"
+    },
+    "AppName": {
+     "Ref": "AppName"
+    },
+    "ServiceName": {
+     "Ref": "WorkloadName"
+    },
+    "RootDNSRole": "arn:aws:iam::615288112214:role/demo-DNSDelegationRole",
+    "DomainName": "efekarakustest.com",
+    "Aliases": [
+     "nlb.efekarakustest.com"
+    ]
+   },
+   "Metadata": {
+    "aws:copilot:description": "Add A-records for your Network Load Balancer aliases"
+   },
+   "Condition": "HasAssociatedDomain"
+  },
+  "AddonsStack": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "TemplateURL": {
+     "Ref": "AddonsTemplateURL"
+    },
+    "Parameters": {
+     "App": {
+      "Ref": "AppName"
+     },
+     "Env": {
+      "Ref": "EnvName"
+     },
+     "Name": {
+      "Ref": "WorkloadName"
+     }
+    }
+   },
+   "DependsOn": [
+    "EnvControllerAction"
+   ],
+   "Metadata": {
+    "aws:copilot:description": "An Addons CloudFormation Stack for your additional AWS resources"
+   },
+   "Condition": "HasAddons"
+  },
+  "ElasticIP1": {
+   "Type": "AWS::EC2::EIP",
+   "Metadata": {
+    "aws:cdk:path": "Stack/ElasticIP1"
+   }
+  },
+  "ElasticIP2": {
+   "Type": "AWS::EC2::EIP",
+   "Metadata": {
+    "aws:cdk:path": "Stack/ElasticIP2"
+   }
+  }
+ },
+ "Outputs": {
+  "DiscoveryServiceARN": {
+   "Description": "ARN of the Discovery Service.",
+   "Value": {
+    "Fn::GetAtt": "DiscoveryService.Arn"
+   },
+   "Export": {
+    "Name": {
+     "Fn::Sub": "${AWS::StackName}-DiscoveryServiceARN"
+    }
+   }
+  },
+  "PublicNetworkLoadBalancerDNSName": {
+   "Value": {
+    "Fn::GetAtt": "PublicNetworkLoadBalancer.DNSName"
+   },
+   "Export": {
+    "Name": {
+     "Fn::Sub": "${AWS::StackName}-PublicNetworkLoadBalancerDNSName"
+    }
+   }
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
